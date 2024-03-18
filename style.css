@@ -1,0 +1,261 @@
+﻿/* Подключение шрифтов */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #1F262E;
+}
+
+
+/* Для шапки */
+.header{
+    height: 10vh;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    color: white;
+    background-color: #2B313D;
+    display: flex; 
+    align-items: center; 
+}
+
+.header a{
+    color: white;
+    text-decoration: none;
+    font-size: clamp(1rem, calc(8px + 1vw), 24px);
+    font-weight: 700;
+    float: left;
+    margin: 20px 40px; /* переписать на относительные величины */
+}
+
+/* Для общего блока*/
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 calc(35% - 610px);
+    margin-top: 1rem;
+}
+
+/* Для навигации */
+.settings{
+    width: 23%;
+    background-color: #2B313D;
+    border-radius: 15px;
+    height: calc();
+}
+
+.settings__nav{
+    padding-top: 1.5rem; /* переписать на относительные величины */
+    color: white;
+    margin: 0 1.5rem;
+    float: left;
+   
+}
+
+.settings__list, .content-wrapper__list-item{
+    margin: 10px 20px; /* переписать на относительные величины */
+    list-style-type: none;
+}
+
+.settings__link, .content-wrapper__list-item{
+    text-decoration: none;
+    color: white;
+    font-weight: 400;
+    font-size: 20px; /* переписать на media*/
+}
+
+.settings__list-item{
+    display: flex;
+    color: white;
+    margin-left: 0;
+    margin-bottom: 1rem;
+}
+
+.settings__list-item img{
+    margin: 0;
+    width: 15px;
+    height: 15px;
+}
+
+.settings__list-item img + .settings__link{
+    margin-left: 0.5em;
+}
+
+.settings__link + .settings__list-item img{
+    margin-left: 0.5em;
+}
+
+.settings__text{
+    text-transform: uppercase;
+    margin: 0.5rem 0;
+    display: inline-block;
+}
+
+/* Для основного блока */
+
+.content{
+    background-color: #2B313D;
+    border-radius: 15px;
+    width: 75%;
+}
+
+.content-news{
+    width: 75%;
+    height: 80vh;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.news-block {
+    background-color: #2B313D;
+    border-radius: 5px;
+    flex: 0 0 calc(50% - 20px); /* 50% ширины с учетом отступов между блоками */
+    margin: 10px;
+    height: 274px;
+    position: relative; /* Добавьте это свойство, чтобы position:absolute внутри блока работал корректно */
+
+}
+
+.news-block-news_link{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.content-wrapper_text{
+    margin: 35px 20px 0 30px; 
+    color: white;
+    font-size: 30px;
+}
+
+.content-news_description{
+    margin: 40px 20px 0 35px; 
+    color: white;
+    font-size: 20px;
+}
+
+.content-head{
+    margin: 1rem;
+}
+
+.content-wrapper{
+    border-top: 1px solid #343A46;
+    display: flex;
+    padding: 20px 15px;
+}
+
+.content-wrapper__image{
+    width: 200px;
+    height: 200px;
+    border-radius: 20px;
+}
+
+.content-wrapper__buttons{
+    margin: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    background-color: #8DCFFF;
+    color: white;
+    font-weight: 700;
+    padding: 10px;
+}
+
+.content-wrapper__text{
+    margin: 10px 20px;
+    color: white;
+    font-size: 20px;
+}
+
+.content-head__button{
+    align-items: center;
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border: 1px solid transparent;
+    background-color: #8DCFFF;
+    border-radius: 5px;
+}
+
+.content-head__image{
+    width: 25px;
+    height: 25px;
+}
+
+.update{
+    width: 20px;
+    height: 20px;
+}
+
+.content-head__input{
+    height: 30px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: white;
+    padding-left: 10px;
+}
+
+
+.content-head_add_input{
+    height: 50px;
+    width: 30%;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: white;
+    background-color: #1F2630;
+    padding-left: 10px;
+}
+
+.entrance{
+    background-color: #2B313D;
+    border-radius: 20px;
+    width: 100%;
+    height: 65%;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; /* Центрирование по горизонтали */
+
+
+}
+
+.entrance-main_lable{
+    font-size: 25px;
+    text-align: center;
+    margin-top: 35px;
+    color: white;
+}
+
+.entrance-minor_lable{
+    font-size: 20px;
+    color: white;
+}
+
+.content-search__button{
+    display: inline-block;
+    background-color: #8DCFFF;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 10px; /* Отступ между кнопками */
+    margin-bottom: 10px; /* Отступ между кнопками */
+
+
+}
+.content-head__buttons-row button {
+    margin-top: 10px; /* Отступ между кнопками */
+}
+.content-search__button img {
+vertical-align: middle; /* Выравнивание изображения по центру по вертикали */
+margin-right: 5px; /* Дополнительный отступ между изображением и текстом  */
+}
+.content-wrapper__text{
+margin: 10px 20px;
+color: white;
+font-size: 20px;}

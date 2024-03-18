@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+
+    </style>
+</head>
+<body>
+  <header class="header">
+        <a href="../general_page.php">Музыкальный сервис</a>
+
+  </header>
+  <main class="main">
+    <div class="container">
+    <div class="entrance">
+            <h1 class="entrance-main_lable">Регистрация учетной записи</h1>
+            <p><label class="entrance-minor_lable">Логин пользователя</label></p>
+            <input class="content-head_add_input" type="text" id="login" name="login">
+            <p><label class="entrance-minor_lable">Пароль пользователя</label></p>
+            <input type="password" class="content-head_add_input" id="password" name="password">
+            <p><label class="entrance-minor_lable">Имя пользователя</label></p>
+            <input type="text" class="content-head_add_input" id="name" name="name">
+            <p><label class="entrance-minor_lable">Фамилия пользователя</label></p>
+            <input type="text" class="content-head_add_input" id="lname" name="lname">
+            <p><label class="entrance-minor_lable">Email пользователя*</label></p>
+            <input type="text" class="content-head_add_input" id="email" name="email">
+            <p id="warning" style="color: red;"></p>
+            <p><button class="content-search__button" type="button" onclick="checkCredentials()">Зарегистрироваться</button></p>
+    </div>
+  </div>
+  </main>
+  <script>
+    function checkCredentials() {
+      var login = document.getElementById("login").value;
+      var password = document.getElementById("password").value;
+      var name = document.getElementById("name").value;  
+      var lname = document.getElementById("lname").value;  
+      var email = document.getElementById("email").value;  
+
+      if (!login || !password || !name || !lname || !email) {
+        document.getElementById("warning").innerText = 'Заполните все обязательные поля.';
+        return;
+      }
+
+      fetch('new_client.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'login=' + encodeURIComponent(login) + '&password=' + encodeURIComponent(password) + '&name=' + encodeURIComponent(name) + '&lname=' + encodeURIComponent(lname) + '&email=' + encodeURIComponent(email),
+            })
+            .then(response => response.json())
+            .then(data => {
+                switch (data.status) {
+                    case 'success':
+                        window.location.href = 'general_page.php';
+                        break;
+                    case 'change':
+                        document.getElementById("warning").innerText = 'Такие логин и пароль уже существуют. Введите другие значения.';
+                        break;
+                    case 'exists':
+                        document.getElementById("warning").innerText = 'Пользователь с таким email уже существует.';
+                        break;
+                    case 'invalid_email':
+                        document.getElementById("warning").innerText = 'Введите корректный email.';
+                        break;
+                    default:
+                        document.getElementById("warning").innerText = 'Произошла ошибка при регистрации.';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+   </script>
+</body>
