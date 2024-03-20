@@ -1,15 +1,16 @@
 <?php
 session_start();
 header('Content-Type: text/html; charset=utf-8');
+ini_set('display_errors', 'off');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die ("Connection failed: " . $conn->connect_error);
 }
 $criteria = $_GET['criteria'];
 
-$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
-$current_sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
+$sort_column = isset ($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
+$current_sort_order = isset ($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
 
 $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
 ?>
@@ -24,44 +25,44 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/style_add.css">
 
-    
+
 </head>
 
 <body>
     <header class="header">
-            <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="../general_page.php">Музыкальный сервис</a>
 
     </header>
     <main class="main">
         <div class="container">
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
             <section class="content">
                 <div class="content-head_add">
                     <a class="settings__link" href="add_artist.php">Добавление нового исполнителя</a>
                 </div>
                 <?php
-                if ($criteria == 1){
+                if ($criteria == 1) {
                     echo '<a class="settings__link" href="list_comp.php?criteria=1&sort_column=lisening">Статистика популярности треков</a>
                     <p><a class="settings__link" href="list_genre.php?criteria=1&sort_column=lisening">Статистика популярности жанров</a></p>
                     <p><a class="settings__link" href="list_artist.php?criteria=1&sort_column=lisening">Статистика популярности исполнителей</a></p>
                     ';
-                 }
+                }
                 ?>
                 <div class="content-main">
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    
-                                <?php
-                                echo '
-                                    <th><a href="?criteria='.$criteria.'&sort_column=id&sort_order=' . $next_sort_order . '">ID</a></th>
+
+                                    <?php
+                                    echo '
+                                    <th><a href="?criteria=' . $criteria . '&sort_column=id&sort_order=' . $next_sort_order . '">ID</a></th>
                                     <th>Обложка</th>
-                                    <th><a href="?criteria='.$criteria.'&sort_column=name&sort_order=' . $next_sort_order . '">Исполнитель</a></th>
+                                    <th><a href="?criteria=' . $criteria . '&sort_column=name&sort_order=' . $next_sort_order . '">Исполнитель</a></th>
                                     <th>Жанры</th>';
                                     if ($criteria == 1) {
-                                        echo '<th><a href="?criteria='.$criteria.'&sort_column=lisening&sort_order=' . $next_sort_order . '">Число прослушиваний</a></th>';    
+                                        echo '<th><a href="?criteria=' . $criteria . '&sort_column=lisening&sort_order=' . $next_sort_order . '">Число прослушиваний</a></th>';
                                     }
                                     ?>
                                 </tr>
@@ -78,7 +79,7 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                     while ($row = mysqli_fetch_row($result)) {
                                         $url_update = 'update_artist.php?id=' . $row[0];
                                         $url_delete = 'delete_artist_process.php?id=' . $row[0];
-                                        $image_url = str_replace("C:\\WebServers\\home\\music\\www", "", $row[2]);
+                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $row[2]);
                                         if (@file_get_contents($image_url) == false) {
                                             $image_url = "/media/unknown.png";
                                         }

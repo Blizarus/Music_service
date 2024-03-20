@@ -11,7 +11,7 @@
 </head>
 <body>
   <header class="header">
-        <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="/general_page.php">Музыкальный сервис</a>
 
   </header>
   <main class="main">
@@ -57,7 +57,7 @@
             .then(data => {
                 switch (data.status) {
                     case 'success':
-                        window.location.href = 'general_page.php';
+                        window.location.href = '/general_page.php';
                         break;
                     case 'change':
                         document.getElementById("warning").innerText = 'Такие логин и пароль уже существуют. Введите другие значения.';

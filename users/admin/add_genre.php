@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die ("Connection failed: " . $conn->connect_error);
 }
 ?>
 <!DOCTYPE html>
@@ -21,12 +21,12 @@ if ($conn->connect_error) {
 
 <body>
     <header class="header">
-            <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="../general_page.php">Музыкальный сервис</a>
 
     </header>
     <main class="main">
         <div class="container">
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
             <section class="content">
                 <div class="content-head_add">
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $genre = $_POST['name_genre'];
 
-    $coverpath = "C:\\WebServers\\home\\music\\wwwmedia\\genre\\" . $id . ".png";
+    $coverpath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\genre\\" . $id . ".png";
 
     $coverFile = $_FILES['cover_file'];
 
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $stmt->close();
     } else {
-        die("Error in genre query: " . $conn->error);
+        die ("Error in genre query: " . $conn->error);
     }
 }
 

@@ -17,7 +17,7 @@ header('Content-Type: text/html; charset=utf-8');
     <header class="header">
         <?php
         ?>
-            <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="../general_page.php">Музыкальный сервис</a>
 
         <div class="music-progress">
             <audio id="audioPlayer" controls style="display: none">
@@ -26,16 +26,17 @@ header('Content-Type: text/html; charset=utf-8');
     </header>
     <main class="main">
         <div class="container">
-            <?php require_once('../settings.php');
+            <?php require_once ('../settings.php');
+            ini_set('display_errors', 'off');
 
 
             $conn = new mysqli('music', 'root', '', 'music');
             if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
+                die ("Connection failed: " . $conn->connect_error);
             }
             $customerid = $_SESSION['id'];
-            $criteria = $_GET['criteria'];
-            $id = $_GET['id'];
+            $criteria = isset ($_GET['criteria']) ? $_GET['criteria'] : '';
+            $id = isset ($_GET['id']) ? $_GET['id'] : '';
             if ($criteria === 'genre') {
                 $Query = $conn->query("select name from genre where genreid = " . $id);
                 $genre = $_GET['genre'];
@@ -85,10 +86,10 @@ header('Content-Type: text/html; charset=utf-8');
                     <div class="content-music" id="searchResults">
                         <?php
 
-                        if (!isset($genre))
+                        if (!isset ($genre))
                             $genre = $_POST['input1'];
                         $name = $_POST['input2'];
-                        if (!isset($artist))
+                        if (!isset ($artist))
                             $artist = $_POST['input3'];
                         $sql = "
                             select c.name,
@@ -153,7 +154,7 @@ header('Content-Type: text/html; charset=utf-8');
                                 order by date DESC limit 25";
                         $result = $conn->query($sql);
 
-                        $prefix = "C:\\WebServers\\home\\music\\www";
+                        $prefix = "C:\\Games\\xampp\\htdocs\\music\\www";
 
                         if ($result->num_rows > 0) {
                             while ($row = mysqli_fetch_row($result)) {
@@ -210,11 +211,11 @@ header('Content-Type: text/html; charset=utf-8');
 </body>
 <script src="/scripts.js"></script>
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($customerid)) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset ($customerid)) {
 
     $conn = new mysqli('music', 'root', '', 'music');
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die ("Connection failed: " . $conn->connect_error);
     }
 
     $genre_hystory = $_POST['input1'];
@@ -222,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($customerid)) {
     $artist_hystory = $_POST['input3'];
 
     $date = date("Y-m-d");
-    if (!empty($genre_hystory)) {
+    if (!empty ($genre_hystory)) {
         $criteria = 1;
         $stmt = $conn->prepare("INSERT INTO search_history VALUES (NULL, ?, ?, ?, ?)");
         if ($stmt) {
@@ -230,10 +231,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($customerid)) {
             $stmt->execute();
             $stmt->close();
         } else {
-            die("Error in audiofiles query: " . $conn->error);
+            die ("Error in audiofiles query: " . $conn->error);
         }
     }
-    if (!empty($name_hystory)) {
+    if (!empty ($name_hystory)) {
         $criteria = 2;
         $stmt = $conn->prepare("INSERT INTO search_history VALUES (NULL, ?, ?, ?, ?)");
         if ($stmt) {
@@ -241,10 +242,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($customerid)) {
             $stmt->execute();
             $stmt->close();
         } else {
-            die("Error in audiofiles query: " . $conn->error);
+            die ("Error in audiofiles query: " . $conn->error);
         }
     }
-    if (!empty($artist_hystory)) {
+    if (!empty ($artist_hystory)) {
         $criteria = 3;
         $stmt = $conn->prepare("INSERT INTO search_history VALUES (NULL, ?, ?, ?, ?)");
         if ($stmt) {
@@ -252,7 +253,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($customerid)) {
             $stmt->execute();
             $stmt->close();
         } else {
-            die("Error in audiofiles query: " . $conn->error);
+            die ("Error in audiofiles query: " . $conn->error);
         }
     }
 }

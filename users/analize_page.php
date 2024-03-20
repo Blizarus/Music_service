@@ -1,10 +1,11 @@
 <?php
 session_start();
 header('Content-Type: text/html; charset=utf-8');
+ini_set('display_errors', 'off');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die ("Connection failed: " . $conn->connect_error);
 }
 ?>
 <!DOCTYPE html>
@@ -22,12 +23,12 @@ if ($conn->connect_error) {
 
 <body>
     <header class="header">
-            <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="../general_page.php">Музыкальный сервис</a>
 
     </header>
     <main class="main">
         <div class="container">
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
             <section class="content">
                 <div class="content-main">
@@ -39,8 +40,8 @@ if ($conn->connect_error) {
                             <p><a class="content-wrapper__text" id="file"></a></p>
                         </div>
                         <div>
-                            <?php 
-                            if (isset($_SESSION['login'])){
+                            <?php
+                            if (isset ($_SESSION['login'])) {
                                 echo '
                             <input type="checkbox" name="auto_send" id="auto_send" checked>
                             <label for="auto_send">Автоматическая отправка результатов анализа на почту
@@ -57,14 +58,14 @@ if ($conn->connect_error) {
 
                         $filename = $musicFile['name'];
 
-                        $targetFile = "C:\\WebServers\\home\\music\\wwwanalize\\tmp\\tmp.mp3";
+                        $targetFile = "C:\\Games\\xampp\\htdocs\\music\\wwwanalize\\tmp\\tmp.mp3";
                         move_uploaded_file($musicFile['tmp_name'], $targetFile);
-                        require_once($_SERVER['DOCUMENT_ROOT'] . '/analize/call_python.php');
-                        $predicted_genre = isset($genre) ? $genre : 'Не проведен анализ';
-                        $predicted_bpm = isset($bpm) ? $bpm : 'Не проведен анализ';
-                        $predicted_tone = isset($tone) ? implode(', ', $tone) : 'Не проведен анализ';
-                        require_once($_SERVER['DOCUMENT_ROOT'] . '/analize/add_statistic_analize.php');
-                        require_once($_SERVER['DOCUMENT_ROOT'] . '/users/admin/add_mailrequest.php');
+                        require_once ($_SERVER['DOCUMENT_ROOT'] . '/analize/call_python.php');
+                        $predicted_genre = isset ($genre) ? $genre : 'Не проведен анализ';
+                        $predicted_bpm = isset ($bpm) ? $bpm : 'Не проведен анализ';
+                        $predicted_tone = isset ($tone) ? implode(', ', $tone) : 'Не проведен анализ';
+                        require_once ($_SERVER['DOCUMENT_ROOT'] . '/analize/add_statistic_analize.php');
+                        require_once ($_SERVER['DOCUMENT_ROOT'] . '/users/admin/add_mailrequest.php');
                         $conn->close(); ?>
                         <p class="content-wrapper__text">Предположительный жанр:
                             <?php echo $predicted_genre; ?>

@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+  die ("Connection failed: " . $conn->connect_error);
 }
 $id = $_GET['id'];
 $sql = "
@@ -37,7 +37,7 @@ $composition = $result->fetch_row();
 
 <body>
   <header class="header">
-        <a href="../general_page.php">Музыкальный сервис</a>
+    <a href="../general_page.php">Музыкальный сервис</a>
 
     <div class="music-progress">
       <audio id="audioPlayer" controls style="display: none">
@@ -46,35 +46,40 @@ $composition = $result->fetch_row();
   </header>
   <main class="main">
     <div class="container">
-      <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+      <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
       <section class="content">
         <div class="content-head_add">
           <form action="update_comp.php?id=<?php echo urlencode($id); ?>" method="post" enctype="multipart/form-data">
             <button type="button" class="content-search__button" id="selectMusicButton">Изменить музыку</button>
             <input type="file" name="music_file" id="music_file" accept=".mp3" style="display: none">
-            <p><a class="settings__link"  id="file"></a></p> 
+            <p><a class="settings__link" id="file"></a></p>
             <button type="button" class="content-search__button" id="selectCoverButton">Изменить обложку</button>
             <input type="file" name="cover_file" id="cover_file" accept=".png" style="display: none">
-            <p><a class="settings__link"  id="cover"></a></p>
-            
-        <div class="content-cover">
+            <p><a class="settings__link" id="cover"></a></p>
+
+            <div class="content-cover">
               <img class="content-wrapper__image" id="coverImage" style="display: none">
             </div>
         </div>
         <div class="content-main">
-        <div>
-            <p><?php echo '<a class="settings__link">Оригинальный файл: ' . $composition[2] . '-' . str_replace(' ', '_', $composition[0]) . '</a>'; ?></p>
+          <div>
+            <p>
+              <?php echo '<a class="settings__link">Оригинальный файл: ' . $composition[2] . '-' . str_replace(' ', '_', $composition[0]) . '</a>'; ?>
+            </p>
             <div class="music-progress">
               <audio id="originalPlayer" controls
-                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\WebServers\\home\\music\\www", "", $composition[7])))).'?random='.rand() ?>">
+                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $composition[7])))) . '?random=' . rand() ?>">
               </audio>
             </div>
-            <p><?php echo '<a class="settings__link">Оригинальная обложка:</a>'?></p>
+            <p>
+              <?php echo '<a class="settings__link">Оригинальная обложка:</a>' ?>
+            </p>
             <div class="content-cover">
-              <img class="content-wrapper__image" id="originalImage" src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\WebServers\\home\\music\\www", "", $composition[8])))) ?>">
+              <img class="content-wrapper__image" id="originalImage"
+                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $composition[8])))) ?>">
             </div>
-            </div>
+          </div>
           <div class="content_selects">
 
             <h3 class="content-wrapper__text">Название</h3>
@@ -137,7 +142,7 @@ $composition = $result->fetch_row();
   </main>
 </body>
 <!-- <?php echo php_ini_loaded_file(); ?> -->
-<?php require_once('update_comp_process.php'); ?>
+<?php require_once ('update_comp_process.php'); ?>
 
 </html>
 

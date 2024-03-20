@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+  die ("Connection failed: " . $conn->connect_error);
 }
 ?>
 <!DOCTYPE html>
@@ -21,16 +21,16 @@ if ($conn->connect_error) {
 
 <body>
   <header class="header">
-        <a href="../general_page.php">Музыкальный сервис</a>
+    <a href="../general_page.php">Музыкальный сервис</a>
 
     <div class="music-progress">
-    <audio id="audioPlayer" controls style="display: none">
-    </audio>
+      <audio id="audioPlayer" controls style="display: none">
+      </audio>
     </div>
   </header>
   <main class="main">
     <div class="container">
-      <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+      <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
       <section class="content">
         <form action="add_comp.php" method="post" enctype="multipart/form-data">
@@ -46,9 +46,9 @@ if ($conn->connect_error) {
             </div>
           </div>
           <div class="content-main">
-            
 
-          <div class="content_selects">
+
+            <div class="content_selects">
               <h3 class="content-wrapper__text">Название</h3>
               <input class="content-head_add_input" type="text" name="name_composition" id="composition"
                 placeholder="Введите название">
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $result = $conn->query($sql);
   $id = $result->fetch_row();
   $id = $id[0] + 1;
-  
+
   $composition = $_POST['name_composition'];
 
   $artist = $_POST['artist'];
@@ -131,69 +131,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $name = $artist[1] . "-" . str_replace(' ', '_', $composition);
   $dateupload = date("Y-m-d");
-  $coverpath = "C:\\WebServers\\home\\music\\wwwmedia\\composition\\" . $artist[1] . "\\" . $composition . ".png";
+  $coverpath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\composition\\" . $artist[1] . "\\" . $composition . ".png";
 
   $musicFile = $_FILES['music_file'];
-  $filepath = "C:\\WebServers\\home\\music\\wwwmedia\\composition\\" . $artist[1] . "\\";
+  $filepath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\composition\\" . $artist[1] . "\\";
   $musicFileName = $name . ".mp3";
   $targetFile = $filepath . $musicFileName;
   move_uploaded_file($musicFile['tmp_name'], $targetFile);
 
- require_once($_SERVER['DOCUMENT_ROOT'] . '/libraries/getID3-1.9.23/getid3/getid3.php');
+  require_once ($_SERVER['DOCUMENT_ROOT'] . '/libraries/getID3-1.9.23/getid3/getid3.php');
   $getID3 = new getID3;
   $fileinfo = $getID3->analyze($targetFile);
   $duration_seconds = round($fileinfo['playtime_seconds']);
-  if (isset($fileinfo['comments']['picture'][0]['data'])) {
+  if (isset ($fileinfo['comments']['picture'][0]['data'])) {
     $coverData = $fileinfo['comments']['picture'][0]['data'];
 
   }
-  if (!empty($_FILES['cover_file']['tmp_name'])) {
+  if (!empty ($_FILES['cover_file']['tmp_name'])) {
     $coverFile = $_FILES['cover_file'];
-    move_uploaded_file($coverFile['tmp_name'], $coverpath);  
-  }
-  else{
-   require_once($_SERVER['DOCUMENT_ROOT'] . '/libraries/getID3-1.9.23/getid3/getid3.php');
+    move_uploaded_file($coverFile['tmp_name'], $coverpath);
+  } else {
+    require_once ($_SERVER['DOCUMENT_ROOT'] . '/libraries/getID3-1.9.23/getid3/getid3.php');
 
-  
+
     $image = imagecreatefromstring($coverData);
     if ($image !== false) {
-  
+
       file_put_contents($coverpath, $coverData);
     }
   }
 
 
   $// Вставка записи в таблицу audiofiles
-$stmt = $conn->prepare("INSERT INTO audiofiles (filesize, filepath, dateupload, coverpath) VALUES (?, ?, ?, ?)");
-if ($stmt) {
+    $stmt = $conn->prepare("INSERT INTO audiofiles (filesize, filepath, dateupload, coverpath) VALUES (?, ?, ?, ?)");
+  if ($stmt) {
     $stmt->bind_param("dsss", $filesize, $targetFile, $dateupload, $coverpath);
     $filesize = round(filesize($targetFile) / 1024);
     $stmt->execute();
     $inserted_audiofiles_id = $stmt->insert_id; // Получаем идентификатор вставленной записи
     $stmt->close();
-} else {
-    die("Error in audiofiles query: " . $conn->error);
-}
+  } else {
+    die ("Error in audiofiles query: " . $conn->error);
+  }
 
-// Вставка записи в таблицу composition
-$stmt = $conn->prepare("INSERT INTO composition (artistid, genreid, compositionname, audiofilesid) VALUES (?, ?, ?, ?)");
-if ($stmt) {
+  // Вставка записи в таблицу composition
+  $stmt = $conn->prepare("INSERT INTO composition (artistid, genreid, compositionname, audiofilesid) VALUES (?, ?, ?, ?)");
+  if ($stmt) {
     $stmt->bind_param("iisi", $artist[0], $genre, $composition, $inserted_audiofiles_id);
     $stmt->execute();
     $stmt->close();
-} else {
-    die("Error in composition query: " . $conn->error);
-}
+  } else {
+    die ("Error in composition query: " . $conn->error);
+  }
 
-// Вставка записи в таблицу сharacteristics_music
-$stmt = $conn->prepare("INSERT INTO сharacteristics_music (tonalityid, BPM, duration, presencevoice) VALUES (?, ?, ?, ?)");
-if ($stmt) {
+  // Вставка записи в таблицу сharacteristics_music
+  $stmt = $conn->prepare("INSERT INTO сharacteristics_music (tonalityid, BPM, duration, presencevoice) VALUES (?, ?, ?, ?)");
+  if ($stmt) {
     $stmt->bind_param("iiid", $tonality, $BPM, $duration_seconds, $presencevoice);
     $stmt->execute();
     $stmt->close();
-} else {
-    die("Error in сharacteristics_music query: " . $conn->error);
-}
+  } else {
+    die ("Error in сharacteristics_music query: " . $conn->error);
+  }
 
 }
 ?>

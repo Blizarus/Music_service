@@ -14,22 +14,21 @@ header('Content-Type: text/html; charset=utf-8');
 
 <body>
   <header class="header">
-        <a href="../general_page.php">Музыкальный сервис</a>
+    <a href="../general_page.php">Музыкальный сервис</a>
 
   </header>
   <main class="main">
     <div class="container">
-      <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+      <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
       <section class="content">
         <div class="content-head">
           <form action="genre_page.php" method="post" class="content-head__buttons-row">
             <?php
-            $conn = new mysqli($servername, $username, $password, $dbname);
 
             $conn = new mysqli('music', 'root', '', 'music');
             if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
+              die ("Connection failed: " . $conn->connect_error);
             }
 
             echo
@@ -42,7 +41,10 @@ header('Content-Type: text/html; charset=utf-8');
           <div class="content-music" id="searchResults">
             <?php
 
-            $genre = $_POST['input'];
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+              $genre = $_POST['input'];
+            } else
+              $genre = '';
 
             $sql = "select genreid, name, 
                 (select count(liseningdate) from statistic s where s.audiofileid in 
@@ -51,7 +53,7 @@ header('Content-Type: text/html; charset=utf-8');
                 where LOWER(name) like LOWER('%" . $genre . "%')";
             $result = $conn->query($sql);
 
-            $prefix = "C:\\WebServers\\home\\music\\www";
+            $prefix = "C:\\Games\\xampp\\htdocs\\music\\www";
 
             if ($result->num_rows > 0) {
               $i = 1;

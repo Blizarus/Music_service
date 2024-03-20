@@ -13,7 +13,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 <body>
   <header class="header">
-        <a href="../general_page.php">Музыкальный сервис</a>
+    <a href="../general_page.php">Музыкальный сервис</a>
 
   </header>
   <main class="main">
@@ -52,7 +52,7 @@ header('Content-Type: text/html; charset=utf-8');
         .then(data => {
           if (data.success) {
             // Перенаправление на другую страницу
-            window.location.href = 'general_page.php';
+            window.location.href = '/general_page.php';
           } else {
             // Отображение предупреждения
             document.getElementById("warning").innerText = 'Пользователь не найден.';

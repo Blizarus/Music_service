@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die ("Connection failed: " . $conn->connect_error);
 }
 $id = $_GET['id'];
 $sql = "select * from artist where artistid = " . $id;
@@ -25,33 +25,34 @@ $artist = $result->fetch_row();
 
 <body>
     <header class="header">
-            <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="../general_page.php">Музыкальный сервис</a>
 
     </header>
     <main class="main">
         <div class="container">
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
             <section class="content">
                 <div class="content-head_add">
                     <form action="update_artist.php?id=<?php echo urlencode($id); ?>" method="post"
                         enctype="multipart/form-data">
-                        <button type="button" class="content-search__button" id="selectCoverButton">Изменить обложку</button>
+                        <button type="button" class="content-search__button" id="selectCoverButton">Изменить
+                            обложку</button>
                         <input type="file" name="cover_file" id="cover_file" accept=".png" style="display: none">
-                        <p><a class="settings__link"  id="cover"></a></p>
+                        <p><a class="settings__link" id="cover"></a></p>
                         <div class="content-cover">
-                        <img class="content-wrapper__image" id="coverImage" style="display: none">
-                    </div>
+                            <img class="content-wrapper__image" id="coverImage" style="display: none">
+                        </div>
                 </div>
                 <div class="content-main">
-                    
+
                     <div>
                         <p>
                             <?php echo '<a class="settings__link">Оригинальная обложка:</a>' ?>
                         </p>
                         <div class="content-cover">
                             <img class="content-wrapper__image" id="originalImage"
-                                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\WebServers\\home\\music\\www", "", $artist[2])))) ?>">
+                                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $artist[2])))) ?>">
                         </div>
                     </div>
                     <div class="content_selects">
@@ -104,9 +105,9 @@ $artist = $result->fetch_row();
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $coverpath = "C:\\WebServers\\home\\music\\wwwmedia\\composition\\" . str_replace(' ', '_', $artist) . "\\" . str_replace(' ', '_', $artist) . ".png";
+    $coverpath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\composition\\" . str_replace(' ', '_', $artist) . "\\" . str_replace(' ', '_', $artist) . ".png";
 
-    if (!empty($_FILES['cover_file']['tmp_name'])) {
+    if (!empty ($_FILES['cover_file']['tmp_name'])) {
 
         $coverFile = $_FILES['cover_file'];
         move_uploaded_file($coverFile['tmp_name'], $coverpath);
@@ -116,19 +117,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $artist = $_POST['name_artist'];
 
     $stmt = $conn->prepare("UPDATE artist SET name = ? WHERE artistid = ?");
-  if ($stmt) {
-    $stmt->bind_param("si", $artist, $id);
-    $stmt->execute();
-    $stmt->close();
-  } else {
-    die("Error in composition query: " . $conn->error);
-  }
+    if ($stmt) {
+        $stmt->bind_param("si", $artist, $id);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        die ("Error in composition query: " . $conn->error);
+    }
 
-  $selectedGenresAfter = isset($_POST['options']) ? (array)$_POST['options'] : array();  // Преобразование в массив
+    $selectedGenresAfter = isset ($_POST['options']) ? (array) $_POST['options'] : array();  // Преобразование в массив
 
-  // Определите, какие жанры были добавлены и удалены
-  $addedGenres = array_diff($selectedGenresAfter, $selectedGenresBefore);
-  $deletedGenres = array_diff($selectedGenresBefore, $selectedGenresAfter);
+    // Определите, какие жанры были добавлены и удалены
+    $addedGenres = array_diff($selectedGenresAfter, $selectedGenresBefore);
+    $deletedGenres = array_diff($selectedGenresBefore, $selectedGenresAfter);
     foreach ($addedGenres as $addedGenre) {
         $stmt = $conn->prepare("INSERT INTO genre_artist VALUES (NULL, ?, ?)");
         if ($stmt) {
@@ -136,12 +137,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $stmt->close();
         } else {
-            die("Error in genre_artist query: " . $conn->error);
+            die ("Error in genre_artist query: " . $conn->error);
         }
     }
-    
+
     foreach ($deletedGenres as $deletedGenre) {
-        $conn->query("delete from genre_artist where genreid=".$deletedGenre."");
+        $conn->query("delete from genre_artist where genreid=" . $deletedGenre . "");
     }
 }
 ?>

@@ -1,14 +1,15 @@
 <?php
 session_start();
 header('Content-Type: text/html; charset=utf-8');
+ini_set('display_errors', 'off');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die ("Connection failed: " . $conn->connect_error);
 }
 $criteria = $_GET['criteria'];
-$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
-$current_sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
+$sort_column = isset ($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
+$current_sort_order = isset ($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
 
 $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
 ?>
@@ -27,37 +28,37 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
 
 <body>
     <header class="header">
-            <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="../general_page.php">Музыкальный сервис</a>
 
     </header>
     <main class="main">
         <div class="container">
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
             <section class="content">
                 <div class="content-head_add">
                     <a class="settings__link" href="add_genre.php">Добавление нового жанра</a>
                 </div>
-                <?php 
-                 if ($criteria == 1){
+                <?php
+                if ($criteria == 1) {
                     echo '<a class="settings__link" href="list_comp.php?criteria=1&sort_column=lisening">Статистика популярности треков</a>
                     <p><a class="settings__link" href="list_genre.php?criteria=1&sort_column=lisening">Статистика популярности жанров</a></p>
                     <p><a class="settings__link" href="list_artist.php?criteria=1&sort_column=lisening">Статистика популярности исполнителей</a></p>
                     ';
-                 }
+                }
                 ?>
                 <div class="content-main">
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <?php 
+                                    <?php
                                     echo '
-                                    <th><a href="?criteria='.$criteria.'&sort_column=id&sort_order=' . $next_sort_order . '">ID</a></th>
+                                    <th><a href="?criteria=' . $criteria . '&sort_column=id&sort_order=' . $next_sort_order . '">ID</a></th>
                                     <th>Обложка</a></th>
-                                    <th><a href="?criteria='.$criteria.'&sort_column=genre&sort_order=' . $next_sort_order . '">Жанр</th>';
-                                    if ($criteria == 1){
-                                        echo '<th><a href="?criteria='.$criteria.'&sort_column=lisening&sort_order=' . $next_sort_order . '">Число прослушиваний</a></th>';    
+                                    <th><a href="?criteria=' . $criteria . '&sort_column=genre&sort_order=' . $next_sort_order . '">Жанр</th>';
+                                    if ($criteria == 1) {
+                                        echo '<th><a href="?criteria=' . $criteria . '&sort_column=lisening&sort_order=' . $next_sort_order . '">Число прослушиваний</a></th>';
                                     }
                                     ?>
                                 </tr>
@@ -74,19 +75,19 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                 if ($result->num_rows > 0) {
                                     while ($row = mysqli_fetch_row($result)) {
                                         $url_delete = 'delete_genre_process.php?id=' . $row[0];
-                                        $image_url = str_replace("C:\\WebServers\\home\\music\\www", "", $row[2]);
+                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $row[2]);
                                         if (!file_exists($prefix . $image_url)) {
                                             $image_url = "/media/unknown.png";
                                         }
                                         echo '
                                             <tr>
                                             <td>' . $row[0] . '</td>
-                                            <td><img class="content-wrapper__image" ondblclick="changeImage('.$row[0].')" src="' . $image_url . '" alt=""></td>
+                                            <td><img class="content-wrapper__image" ondblclick="changeImage(' . $row[0] . ')" src="' . $image_url . '" alt=""></td>
                                             <td class="editable" data-id="' . $row[0] . '">' . $row[1] . '</td>';
-                                            if ($criteria == 1){
-                                                echo '<td>'.$row[3].'</td>';
-                                            }
-                                            echo '<td><button onclick="redirectToPage(\'' . $url_delete . '\')" class="content-wrapper__buttons" >Удалить</button></td>    
+                                        if ($criteria == 1) {
+                                            echo '<td>' . $row[3] . '</td>';
+                                        }
+                                        echo '<td><button onclick="redirectToPage(\'' . $url_delete . '\')" class="content-wrapper__buttons" >Удалить</button></td>    
                                             </tr>';
                                     }
                                 }
@@ -101,40 +102,40 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
     </main>
 </body>
 <script>
-    
+
     function changeImage(genreId) {
-    // Создаем input для выбора файла
-    var input = $("<input type='file' accept='.png, .jpg, .jpeg' style='display:none;' />");
+        // Создаем input для выбора файла
+        var input = $("<input type='file' accept='.png, .jpg, .jpeg' style='display:none;' />");
 
-    // При изменении значения в input выполняем действия
-    input.on("change", function (e) {
-    var file = e.target.files[0];
-    if (file) {
-        var formData = new FormData();
-        formData.append('imageData', file);
-        formData.append('id', genreId);
+        // При изменении значения в input выполняем действия
+        input.on("change", function (e) {
+            var file = e.target.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('imageData', file);
+                formData.append('id', genreId);
 
-        // Отправляем изображение на сервер и обновляем базу данных
-        $.ajax({
-            type: 'POST',
-            url: 'update_genre_image.php?id=' + genreId, // Обновленный URL с передачей id в запросе
-            data: formData,
-            processData: false, // Обязательно для FormData
-            contentType: false, // Обязательно для FormData
-            success: function (response) {
-                console.log('Изображение обновлено успешно!');
-            },
-            error: function () {
-                console.log('Произошла ошибка при сохранении изображения.');
+                // Отправляем изображение на сервер и обновляем базу данных
+                $.ajax({
+                    type: 'POST',
+                    url: 'update_genre_image.php?id=' + genreId, // Обновленный URL с передачей id в запросе
+                    data: formData,
+                    processData: false, // Обязательно для FormData
+                    contentType: false, // Обязательно для FormData
+                    success: function (response) {
+                        console.log('Изображение обновлено успешно!');
+                    },
+                    error: function () {
+                        console.log('Произошла ошибка при сохранении изображения.');
+                    }
+                });
             }
         });
+
+
+        // Кликаем на input, чтобы выбрать файл
+        input.click();
     }
-});
-
-
-    // Кликаем на input, чтобы выбрать файл
-    input.click();
-}
 
     $(document).ready(function () {
         var oldText, newText;

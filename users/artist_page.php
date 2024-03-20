@@ -18,17 +18,16 @@ header('Content-Type: text/html; charset=utf-8');
   </header>
   <main class="main">
     <div class="container">
-      <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+      <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
       <section class="content">
         <div class="content-head">
           <form action="artist_page.php" method="post" class="content-head__buttons-row">
             <?php
-            $conn = new mysqli($servername, $username, $password, $dbname);
 
             $conn = new mysqli('music', 'root', '', 'music');
             if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
+              die ("Connection failed: " . $conn->connect_error);
             }
 
             echo
@@ -41,26 +40,30 @@ header('Content-Type: text/html; charset=utf-8');
           <div class="content-music" id="searchResults">
             <?php
 
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               $artist = $_POST['input'];
+            } else
+              $artist = '';
 
-              $sql = "select artistid, name,
+
+            $sql = "select artistid, name,
               (select count(liseningdate) from statistic s where s.audiofileid in 
               (select compositionid from composition c where c.artistid=a.artistid)),
               coverpath from artist a
               where LOWER(name) like LOWER('%" . $artist . "%')";
-              $result = $conn->query($sql);
+            $result = $conn->query($sql);
 
-              $prefix = "C:\\WebServers\\home\\music\\www";
+            $prefix = "C:\\Games\\xampp\\htdocs\\music\\www";
 
-              if ($result->num_rows > 0) {
-                $i = 1;
-                while ($row = mysqli_fetch_row($result)) {
-                  $url = 'search_music.php?id=' . $row[0] . '&criteria=artist&artist='. $row[1].'';
-                  $image_url = str_replace($prefix, "", $row[3]);
-                  if (!file_exists($prefix . $image_url)) {
-                    $image_url = "/media/unknown.png";
-                  }
-                  echo '
+            if ($result->num_rows > 0) {
+              $i = 1;
+              while ($row = mysqli_fetch_row($result)) {
+                $url = 'search_music.php?id=' . $row[0] . '&criteria=artist&artist=' . $row[1] . '';
+                $image_url = str_replace($prefix, "", $row[3]);
+                if (!file_exists($prefix . $image_url)) {
+                  $image_url = "/media/unknown.png";
+                }
+                echo '
                     <div class="content-wrapper">
                     <img class="content-wrapper__image" src="' . $image_url . '" alt="">
                     <div class="content-wrapper__info">
@@ -73,23 +76,23 @@ header('Content-Type: text/html; charset=utf-8');
                       <ul class="content-wrapper__list">
                         <li class="content-wrapper__list-item">
                             Жанры: ';
-                            $genresResult  = $conn->query("select * from genre where genreid in (select genreid from genre_artist ga where ga.artistid=".$row[0].")");
-                            $genres = array();
-                            while ($genre = mysqli_fetch_row($genresResult )) {
-                              $genres[] = '<a class="settings__link" href="search_music.php?id=' . $genre[0] . '&criteria=genre&genre='. $genre[1].'">' . $genre[1] . '</a>';
-                            }
-                            echo implode(', ', $genres); 
-                        echo '</li>
+                $genresResult = $conn->query("select * from genre where genreid in (select genreid from genre_artist ga where ga.artistid=" . $row[0] . ")");
+                $genres = array();
+                while ($genre = mysqli_fetch_row($genresResult)) {
+                  $genres[] = '<a class="settings__link" href="search_music.php?id=' . $genre[0] . '&criteria=genre&genre=' . $genre[1] . '">' . $genre[1] . '</a>';
+                }
+                echo implode(', ', $genres);
+                echo '</li>
                       </ul>
                       <button onclick="redirectToPage(\'' . $url . '\')" class="content-wrapper__buttons" id="buttongenre' . $i . '" >Посмотреть композиции</button>
                     </div>
                     </div>
                     ';
-                  $i = $i + 1;
-                }
+                $i = $i + 1;
               }
+            }
 
-              $conn->close();
+            $conn->close();
             ?>
           </div>
         </div>

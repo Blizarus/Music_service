@@ -3,38 +3,38 @@
         <span class="settings__text">Основное</span>
         <ul class="settings__list">
             <li class="settings__list-item">
-            <img src="/media/image/mainpage.svg" alt="ИконкаГлавная">
-            <a href="/general_page.php" class="settings__link">Главная</a>
+                <img src="/media/image/mainpage.svg" alt="ИконкаГлавная">
+                <a href="/general_page.php" class="settings__link">Главная</a>
             </li>
             <li class="settings__list-item">
-            <img src="/media/image/ticket.svg" alt="ИконкаИсполнителей">
-            <a href="/users/artist_page.php" class="settings__link">Исполнители</a>
+                <img src="/media/image/ticket.svg" alt="ИконкаИсполнителей">
+                <a href="/users/artist_page.php" class="settings__link">Исполнители</a>
             </li>
             <li class="settings__list-item">
-            <img src="/media/image/computer.svg" alt="ИконкаЖанров">
-            <a href="/users/genre_page.php" class="settings__link">Жанры</a>
+                <img src="/media/image/computer.svg" alt="ИконкаЖанров">
+                <a href="/users/genre_page.php" class="settings__link">Жанры</a>
             </li>
             <li class="settings__list-item">
-            <img src="/media/image/playback.svg" alt="ИконкаКомпозиции">
-            <a href="/users/search_music.php?criteria=composition" class="settings__link">Все композиции</a> 
+                <img src="/media/image/playback.svg" alt="ИконкаКомпозиции">
+                <a href="/users/search_music.php?criteria=composition" class="settings__link">Все композиции</a>
             </li>
             <li class="settings__list-item">
-            <img src="/media/image/analize.svg" alt="ИконкаАнализа">
-            <a href="/users/analize_page.php" class="settings__link">Анализ композиции</a>
+                <img src="/media/image/analize.svg" alt="ИконкаАнализа">
+                <a href="/users/analize_page.php" class="settings__link">Анализ композиции</a>
             </li>
             <li class="settings__list-item">
-            <img src="/media/image/search.svg" alt="ИконкаПоиска">
-            <a href="/users/search_music.php?criteria=name" class="settings__link">Поиск копозиции</a>
+                <img src="/media/image/search.svg" alt="ИконкаПоиска">
+                <a href="/users/search_music.php?criteria=name" class="settings__link">Поиск копозиции</a>
             </li>
         </ul>
         <span class="settings__text">Настройки</span>
         <ul class="settings__list">
-        <?php
-            if (!isset($_SESSION['login'])){
-            echo'
+            <?php
+            if (!isset ($_SESSION['login'])) {
+                echo '
             <li class="settings__list-item">
                 <img src="/media/image/login.svg" alt="ИконкаПрофиля">
-                <a href="old_client.php" class="settings__link">Войти в профиль</a>
+                <a href="/users/old_client.php" class="settings__link">Войти в профиль</a>
             </li>
 
             <li class="settings__list-item">
@@ -42,9 +42,8 @@
                 <a href="registration.html" class="settings__link">Зарегистрироваться</a>
             </li>
             ';
-            }
-            else{
-            echo'
+            } else {
+                echo '
             <li class="settings__list-item">
                 <img src="/media/image/login.svg" alt="ИконкаПрофиля">
                 <a href="/users/authorized/list_history.php" class="settings__link">История пользователя</a>
@@ -68,10 +67,10 @@
                 <a href="/users/authorized/list_mailing.php" class="settings__link">Управление подписками </a>
             </li>';
             }
-        ?>
+            ?>
         </ul>
         <?php
-        if ($_SESSION['right'] == 1){
+        if (isset($_SESSION['right']) && $_SESSION['right'] == 1) {
             echo '
             <span class="settings__text">Администрирование</span>
             <ul class="settings__list">
