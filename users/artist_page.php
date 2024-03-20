@@ -53,7 +53,7 @@ header('Content-Type: text/html; charset=utf-8');
               where LOWER(name) like LOWER('%" . $artist . "%')";
             $result = $conn->query($sql);
 
-            $prefix = "C:\\Games\\xampp\\htdocs\\music\\www";
+            $prefix = "C:\\Games\\xampp\\htdocs\\music";
 
             if ($result->num_rows > 0) {
               $i = 1;

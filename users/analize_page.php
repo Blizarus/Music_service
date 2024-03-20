@@ -58,7 +58,7 @@ if ($conn->connect_error) {
 
                         $filename = $musicFile['name'];
 
-                        $targetFile = "C:\\Games\\xampp\\htdocs\\music\\wwwanalize\\tmp\\tmp.mp3";
+                        $targetFile = "C:\\Games\\xampp\\htdocs\\musicanalize\\tmp\\tmp.mp3";
                         move_uploaded_file($musicFile['tmp_name'], $targetFile);
                         require_once ($_SERVER['DOCUMENT_ROOT'] . '/analize/call_python.php');
                         $predicted_genre = isset ($genre) ? $genre : 'Не проведен анализ';

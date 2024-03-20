@@ -69,7 +69,7 @@ $composition = $result->fetch_row();
             </p>
             <div class="music-progress">
               <audio id="originalPlayer" controls
-                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $composition[7])))) . '?random=' . rand() ?>">
+                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music", "", $composition[7])))) . '?random=' . rand() ?>">
               </audio>
             </div>
             <p>
@@ -77,7 +77,7 @@ $composition = $result->fetch_row();
             </p>
             <div class="content-cover">
               <img class="content-wrapper__image" id="originalImage"
-                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $composition[8])))) ?>">
+                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music", "", $composition[8])))) ?>">
             </div>
           </div>
           <div class="content_selects">

@@ -131,10 +131,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $name = $artist[1] . "-" . str_replace(' ', '_', $composition);
   $dateupload = date("Y-m-d");
-  $coverpath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\composition\\" . $artist[1] . "\\" . $composition . ".png";
+  $coverpath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . $artist[1] . "\\" . $composition . ".png";
 
   $musicFile = $_FILES['music_file'];
-  $filepath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\composition\\" . $artist[1] . "\\";
+  $filepath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . $artist[1] . "\\";
   $musicFileName = $name . ".mp3";
   $targetFile = $filepath . $musicFileName;
   move_uploaded_file($musicFile['tmp_name'], $targetFile);
