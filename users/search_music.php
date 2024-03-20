@@ -154,12 +154,13 @@ header('Content-Type: text/html; charset=utf-8');
                                 order by date DESC limit 25";
                         $result = $conn->query($sql);
 
-                        $prefix = "C:\\Games\\xampp\\htdocs\\music\\www";
+                        $prefix = "C:\\Games\\xampp\\htdocs\\music";
 
                         if ($result->num_rows > 0) {
                             while ($row = mysqli_fetch_row($result)) {
                                 $image_url = str_replace($prefix, "", $row[8]);
                                 $audio_url = rawurlencode((str_replace("/\\/", "/\/", str_replace($prefix, "", $row[12]))));
+
                                 if (!file_exists($prefix . $image_url)) {
                                     $image_url = "/media/unknown.png";
                                 }

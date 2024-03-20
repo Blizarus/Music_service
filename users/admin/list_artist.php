@@ -79,7 +79,7 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                     while ($row = mysqli_fetch_row($result)) {
                                         $url_update = 'update_artist.php?id=' . $row[0];
                                         $url_delete = 'delete_artist_process.php?id=' . $row[0];
-                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $row[2]);
+                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music", "", $row[2]);
                                         if (@file_get_contents($image_url) == false) {
                                             $image_url = "/media/unknown.png";
                                         }

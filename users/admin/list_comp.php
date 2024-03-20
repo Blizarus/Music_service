@@ -76,11 +76,11 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                     (select coverpath  from audiofiles a where a.audiofileid = c.compositionid)
                                     FROM composition c ORDER BY " . $sort_column . " " . $current_sort_order;
                                 $result = $conn->query($sql);
-                                $prefix = "C:\\Games\\xampp\\htdocs\\music\\www";
+                                $prefix = "C:\\Games\\xampp\\htdocs\\music";
 
                                 if ($result->num_rows > 0) {
                                     while ($row = mysqli_fetch_row($result)) {
-                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $row[6]);
+                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music", "", $row[6]);
 
                                         if (!file_exists($prefix . $image_url)) {
                                             $image_url = "/media/unknown.png";

@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $genre = $_POST['name_genre'];
 
-    $coverpath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\genre\\" . $id . ".png";
+    $coverpath = "C:\\Games\\xampp\\htdocs\\musicmedia\\genre\\" . $id . ".png";
 
     $coverFile = $_FILES['cover_file'];
 

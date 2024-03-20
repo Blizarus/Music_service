@@ -75,7 +75,7 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                 if ($result->num_rows > 0) {
                                     while ($row = mysqli_fetch_row($result)) {
                                         $url_delete = 'delete_genre_process.php?id=' . $row[0];
-                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $row[2]);
+                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music", "", $row[2]);
                                         if (!file_exists($prefix . $image_url)) {
                                             $image_url = "/media/unknown.png";
                                         }

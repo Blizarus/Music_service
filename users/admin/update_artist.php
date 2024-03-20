@@ -52,7 +52,7 @@ $artist = $result->fetch_row();
                         </p>
                         <div class="content-cover">
                             <img class="content-wrapper__image" id="originalImage"
-                                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music\\www", "", $artist[2])))) ?>">
+                                src="<?php echo ((str_replace("/\\/", "/\/", str_replace("C:\\Games\\xampp\\htdocs\\music", "", $artist[2])))) ?>">
                         </div>
                     </div>
                     <div class="content_selects">
@@ -105,7 +105,7 @@ $artist = $result->fetch_row();
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $coverpath = "C:\\Games\\xampp\\htdocs\\music\\wwwmedia\\composition\\" . str_replace(' ', '_', $artist) . "\\" . str_replace(' ', '_', $artist) . ".png";
+    $coverpath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . str_replace(' ', '_', $artist) . "\\" . str_replace(' ', '_', $artist) . ".png";
 
     if (!empty ($_FILES['cover_file']['tmp_name'])) {
 
