@@ -1,0 +1,106 @@
+﻿#chat{
+	padding-left:0;
+	margin:0;
+	list-style-type:none;
+	overflow-y:scroll;
+	height:535px;
+	
+	border-top:2px solid #fff;
+	border-bottom:2px solid #fff;
+}
+#chat li{
+	padding:10px 30px;
+}
+#chat h2{
+	display:inline-block;
+	font-size: 16px;
+	font-weight:normal;
+	color:#ffffff;
+}
+#chat h3{
+  display:inline-block;
+	font-size: 12px;
+	font-weight:normal;
+	color:#bbb;
+  margin-left:5px;
+}
+#chat .entete{
+	margin-bottom:5px;
+}
+
+#chat .entete img {
+	margin-right: 10px; 
+  margin-left: 10px; /* Добавляем дополнительный отступ слева */
+}
+
+#chat .message{
+	padding:20px;
+	color:#fff;
+	line-height:25px;
+	max-width:90%;
+	display:inline-block;
+	text-align:left;
+	border-radius:5px;	
+
+	
+	border: 1px solid transparent; /* Добавляем рамку */
+	border-radius: 10px; /* Закругляем углы */
+	margin-bottom: 5px;
+	 /* Добавляем отступ между сообщениями */
+	border-width: 2px;
+}
+#chat .me{
+	text-align:right;
+}
+
+#chat .you .message{
+	/* background-color:#8abb91; */
+	border-color :#8abb91;
+
+}
+#chat .me .message{
+	/* background-color:#93bfda; */
+	border-color :#93bfda;
+
+}
+
+
+main footer{
+	height:155px;
+	padding:20px 30px 10px 20px;
+}
+main footer textarea{
+	resize:none;
+	border:none;
+	display:block;
+	width:90%;
+	height:80px;
+	border-radius:3px;
+	padding:20px;
+	font-size:13px;
+	margin-bottom:13px;
+}
+
+
+main footer a{
+	text-decoration:none;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#6fbced;
+	vertical-align:top;
+	margin-left:333px;
+	margin-top:5px;
+	display:inline-block;
+}
+
+.green {
+  color: #8abb91 !important;
+}
+
+.red {
+  color: #F19EA6 !important;
+}
+
+.white {
+  color: white !important;
+}
