@@ -60,6 +60,7 @@ header('Content-Type: text/html; charset=utf-8');
               while ($row = mysqli_fetch_row($result)) {
                 $url = 'search_music.php?id=' . $row[0] . '&criteria=artist&artist=' . $row[1] . '';
                 $image_url = str_replace($prefix, "", $row[3]);
+                echo $image_url;
                 if (!file_exists($prefix . $image_url)) {
                   $image_url = "/media/unknown.png";
                 }
