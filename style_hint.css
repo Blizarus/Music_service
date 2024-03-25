@@ -1,0 +1,31 @@
+﻿[data-title] {
+  position: relative; /* Относительное позиционирование */ 
+  cursor: help; /* Меняем курсор на справочный */
+}
+
+[data-title]::after {
+  content: attr(data-title); /* Выводим текст из атрибута data-title */
+  position: absolute; /* Абсолютное позиционирование */
+  top: 1em; /* Положение подсказки */
+  opacity: 0; /* Скрываем подсказку, делая её прозрачной */
+  transition: 0.5s; /* Время появления подсказки */
+  pointer-events: none; /* Подсказка не реагирует на курсор */
+  background: #8DCFFF; /* Синий цвет фона */
+  color: black; /* Белый цвет текста */
+  padding: 0.5em; /* Поля вокруг текста */
+  white-space: pre-wrap; /* Разрешаем перенос строки */
+  /* Увеличение ширины подсказки */
+  width: max-content; /* Подсказка будет иметь ширину, достаточную для содержимого */
+}
+
+[data-title]:hover::after {
+  opacity: 1; /* Показываем подсказку */
+}
+
+#chat .you .hint::after {
+  left: 0 !important;
+}
+
+#chat .me .hint::after {
+  right: 0 !important;
+}

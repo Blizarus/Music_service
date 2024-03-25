@@ -11,13 +11,13 @@ header('Content-Type: text/html; charset=utf-8');
   <title>Document</title>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/style_forum.css">
+  <link rel="stylesheet" href="/style_hint.css">
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 
 <body>
   <header class="header">
     <a href="../general_page.php">Музыкальный сервис</a>
-
   </header>
   <main class="main">
     <div class="container">
@@ -43,23 +43,46 @@ header('Content-Type: text/html; charset=utf-8');
           $result = $conn->query($sql);
           if ($result->num_rows > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-              $html = '<li class="' . ($_SESSION['id'] == $row['customerid'] ? 'me' : 'you') . '">';
+
+              $role = $_SESSION['id'] == $row['customerid'] ? 'me' : 'you';
+              $html = '<li class="' . $role . '">';
               $html .= '<div class="entete">';
               $html .= '<h2>' . $row['customer_name'] . '</h2>';
               $html .= '<h3>' . $row['datemessage'] . '</h3>';
               $html .= '</div>';
               $html .= '<div class="message">' . $row['messagetext'] . '</div>';
               $html .= '<div class="entete">';
-              $html .= '<h2>Ответить</h2>';
+              $html .= '<button class="reply-btn" data-message-id="' . $row["messageid"] . '">Ответить</button>';
 
               // Выполнение запроса на подсчет суммы реакций
-              $reaction_sql = "SELECT SUM(reaction) AS total_reaction FROM reactions WHERE messageid=?";
-              $stmt = $conn->prepare($reaction_sql);
-              $stmt->bind_param("i", $row['messageid']);
-              $stmt->execute();
-              $reaction_result = $stmt->get_result();
-              $reaction_row = $reaction_result->fetch_assoc();
-              $total_reaction = isset ($reaction_row['total_reaction']) ? $reaction_row['total_reaction'] : 0;
+              $reaction_sql = "SELECT 
+              customer_name, (positive_reactions + negative_reactions) AS total_reaction FROM (
+              SELECT 
+                  CONCAT(c.firstname, ' ', c.lastname) AS customer_name,
+                  SUM(CASE WHEN r.reaction = 1 THEN 1 ELSE 0 END) AS positive_reactions,
+                  SUM(CASE WHEN r.reaction = -1 THEN -1 ELSE 0 END) AS negative_reactions
+              FROM reactions r JOIN customers c ON r.customerid = c.customerid
+              WHERE r.messageid = " . $row['messageid'] . " GROUP BY c.firstname, c.lastname) AS reactions_summary;";
+              $reaction_result = $conn->query($reaction_sql);
+
+              $total_reaction = 0;
+              $positive_reaction = [];
+              $negative_reaction = [];
+
+              if ($reaction_result->num_rows > 0) {
+                while ($row_reaction = $reaction_result->fetch_assoc()) {
+                  $total_reaction += $row_reaction['total_reaction'];
+                  if ($row_reaction['total_reaction'] == 1) {
+                    $positive_reaction[] = $row_reaction['customer_name'];
+                  } else if ($row_reaction['total_reaction'] == -1) {
+                    $negative_reaction[] = $row_reaction['customer_name'];
+                  }
+                }
+              }
+
+              $positive_reaction_text = count($positive_reaction) > 0 ? count($positive_reaction) . " плюсов: " . implode(', ', $positive_reaction) . "\n" : "0 плюсов \n";
+              $negative_reaction_text = count($negative_reaction) > 0 ? count($negative_reaction) . " минусов: " . implode(', ', $negative_reaction) . "\n" : "0 минусов \n";
+
 
               $user_reaction_sql = "SELECT reaction FROM reactions WHERE messageid=? AND customerid=?";
               $user_reaction_stmt = $conn->prepare($user_reaction_sql);
@@ -67,6 +90,7 @@ header('Content-Type: text/html; charset=utf-8');
               $user_reaction_stmt->execute();
               $user_reaction_result = $user_reaction_stmt->get_result();
               $user_reaction_row = $user_reaction_result->fetch_assoc();
+
               $user_reaction = isset ($user_reaction_row['reaction']) ? true : false;
 
               $upvote_image = $user_reaction ? ($user_reaction_row['reaction'] == 1 ? "/media/image/row_up_active.svg" : "/media/image/row_up.svg") : "/media/image/row_up.svg";
@@ -77,18 +101,56 @@ header('Content-Type: text/html; charset=utf-8');
 
               $html .= '<img class="' . $upvote_status . '" src="' . $upvote_image . '" data-message-id="' . $row['messageid'] . '" alt="ИконкаВверх" style="width: 20px; height: 20px;">';
 
-              $html .= '<h2 class="total_reaction';
+
+              $html .= '<span class="total_reaction';
               $html .= $total_reaction > 0 ? ' green' : ($total_reaction < 0 ? ' red' : ' white');
-              $html .= '">' . $total_reaction . '</h2>';
+              $html .= '"><abbr class ="hint" data-title="' . $positive_reaction_text . $negative_reaction_text . '">' . $total_reaction . '</abbr></span>';
 
 
               $html .= '<img class="' . $downvote_status . '" src="' . $downvote_image . '" data-message-id="' . $row['messageid'] . '" alt="ИконкаВниз" style="width: 20px; height: 20px;">';
 
-
-
               $html .= '</div>';
               $html .= '</li>';
               echo $html;
+
+              $parentMessageId = $row['parentmessage'];
+              $padding_parent = 15;
+              do {
+                if ($parentMessageId !== null) {
+                  $parentSql = "SELECT m.messageid, m.customerid, CONCAT(c.firstname, ' ', c.lastname) AS customer_name, m.messagetext, m.datemessage, m.parentmessage
+                                    FROM message m
+                                    JOIN customers c ON m.customerid = c.customerid
+                                    WHERE m.messageid = ?";
+                  $parentStmt = $conn->prepare($parentSql);
+                  $parentStmt->bind_param("i", $parentMessageId);
+                  $parentStmt->execute();
+                  $parentResult = $parentStmt->get_result();
+
+                  if ($parentResult->num_rows > 0) {
+                    $parentRow = $parentResult->fetch_assoc();
+                    $style = $role == "me" ? "right" : "left";
+                    // Вывод родительского сообщения
+                    echo '<li class="parent ' . $role . '" style="margin-' . $style . ': ' . $padding_parent . 'px;">';
+                    echo '<div class="entete">';
+                    echo '<h2>' . $parentRow['customer_name'] . '</h2>';
+                    echo '<h3>' . $parentRow['datemessage'] . '</h3>';
+                    echo '</div>';
+                    echo '<div class="message">' . $parentRow['messagetext'] . '</div>';
+                    echo '</li>';
+
+                    // Переходим к следующему родительскому сообщению
+                    $parentMessageId = $parentRow['parentmessage'];
+                    $padding_parent += 15;
+
+                  } else {
+                    // Если родительское сообщение не найдено, выходим из цикла
+                    break;
+                  }
+                } else {
+                  // Если нет родительского сообщения, выходим из цикла
+                  break;
+                }
+              } while (true);
             }
           }
 
@@ -96,8 +158,15 @@ header('Content-Type: text/html; charset=utf-8');
         </ul>
 
         <footer>
-          <textarea placeholder="Type your message"></textarea>
-          <a href="#" id="send">Send</a>
+          <div class="reply-box">
+            <div class="original-message" style="display: none; color: white;">
+              <p>Вы отвечаете на сообщение:</p>
+              <p id="reply" data-reply-id=""></p>
+            </div>
+            <textarea placeholder="Введите свое сообщение"></textarea>
+            <a href="#" id="send">Отправить</a>
+          </div>
+
         </footer>
     </div>
 
@@ -119,12 +188,17 @@ header('Content-Type: text/html; charset=utf-8');
       // Получаем текст сообщения из textarea
       var messageText = $("textarea").val();
 
+      var replyId = $("#reply").data("reply-id") == "" ? null : $("#reply").data("reply-id");
+      console.error($("#reply").data());
+      console.error(replyId);
+
       // Отправляем данные на сервер
       $.ajax({
         url: '/users/authorized/add_message.php', // Путь к файлу обработчику
         type: 'POST',
         data: {
-          message: messageText
+          message: messageText,
+          replyId: replyId // Передаем значение data-reply-id на сервер
         },
         success: function (response) {
           $("#chat").append(response);
@@ -134,6 +208,8 @@ header('Content-Type: text/html; charset=utf-8');
           chatContainer.scrollTop = chatContainer.scrollHeight;
 
           $("textarea").val(""); // Очищаем текстовое поле после отправки
+
+          location.reload();
         }
         ,
         error: function (xhr, status, error) {
@@ -146,11 +222,16 @@ header('Content-Type: text/html; charset=utf-8');
 
 <script>
   $(document).ready(function () {
-    $(".reaction-arrow").click(function () {
+    $("#chat").on("click", ".reaction-arrow", function () {
       var $arrow = $(this);
       var messageId = $arrow.data("message-id");
       var reactionType = $arrow.hasClass("upvote") ? 1 : -1;
 
+      var isMyMessage = $(this).closest('li').hasClass('me');
+      if (isMyMessage) {
+        alert("Вы не можете ставить реакции на свои собственные сообщения!");
+        return; // Прерываем выполнение функции
+      }
       if (checkState($arrow)) {
         if ($arrow.hasClass("non-active")) {
           toggleReaction(messageId, -reactionType, $arrow, true);
@@ -210,12 +291,10 @@ header('Content-Type: text/html; charset=utf-8');
       success: function (response) {
         // Обновляем количество реакций на странице
         var $reactionCount = $arrow.siblings(".total_reaction"); // Находим элемент, отображающий количество реакций
-        console.error(parseInt($reactionCount.text()));
-        console.error(reactionType);
         var newReactionCount = parseInt($reactionCount.text()) + (status ? -reactionType : reactionType); // Обновляем количество реакций
         $reactionCount.text(newReactionCount); // Устанавливаем новое значение количества реакций
-        console.error(parseInt($reactionCount.text()));
 
+        // Обновляем классы подсказки, если необходимо
         if (newReactionCount > 0) {
           $reactionCount.removeClass("red white").addClass("green");
         } else if (newReactionCount < 0) {
@@ -224,11 +303,13 @@ header('Content-Type: text/html; charset=utf-8');
           $reactionCount.removeClass("green red").addClass("white");
         }
       },
+
       error: function (xhr, status, error) {
         console.error(xhr.responseText);
       }
     });
   }
+
 
   function checkState($arrow) {
     var isActive = $arrow.hasClass("active");
@@ -244,7 +325,25 @@ header('Content-Type: text/html; charset=utf-8');
   }
 </script>
 
+<script>
+  $(document).ready(function () {
+    // При нажатии на кнопку "Ответить"
+    $("#chat").on("click", ".reply-btn", function () {
+      var messageId = $(this).data("message-id");
+      var originalMessage = $(this).closest("li").find(".message").text();
 
+      // Показываем блок original-message
+      $(".original-message").show();
 
+      // Устанавливаем текст сообщения ответа
+      $("#reply").text(originalMessage);
+
+      // Устанавливаем идентификатор сообщения в data-reply-id
+      $("#reply").data("reply-id", messageId);
+      // console.error($("#reply").data());
+
+    });
+  });
+</script>
 
 </html>
