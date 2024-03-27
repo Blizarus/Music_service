@@ -37,22 +37,23 @@ header('Content-Type: text/html; charset=utf-8');
             die ("Connection failed: " . $conn->connect_error);
           }
 
-          $sql = "SELECT m.messageid, m.customerid, CONCAT(c.firstname, ' ', c.lastname) AS customer_name , m.messagetext, m.datemessage, m.parentmessage
-          FROM message m
-          JOIN customers c ON m.customerid = c.customerid";
+          $sql = "SELECT m.messageid, m.customerid, CONCAT(c.firstname, ' ', c.lastname) AS customer_name, c.administrator, m.messagetext, m.datemessage, m.parentmessage
+        FROM message m
+        JOIN customers c ON m.customerid = c.customerid";
           $result = $conn->query($sql);
           if ($result->num_rows > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 
+              $customerName = $row['administrator'] == 1 ? "Администратор " . $row['customer_name']: $row['customer_name'];
               $role = $_SESSION['id'] == $row['customerid'] ? 'me' : 'you';
               $html = '<li class="' . $role . '">';
               $html .= '<div class="entete">';
-              $html .= '<h2>' . $row['customer_name'] . '</h2>';
+              $html .= '<h2>' . $customerName . '</h2>';
               $html .= '<h3>' . $row['datemessage'] . '</h3>';
               $html .= '</div>';
               $html .= '<div class="message">' . $row['messagetext'] . '</div>';
               $html .= '<div class="entete">';
-              $html .= '<button class="reply-btn" data-message-id="' . $row["messageid"] . '">Ответить</button>';
+              $html .= '<button class="reply-btn response" data-message-id="' . $row["messageid"] . '">Ответить</button>';
 
               // Выполнение запроса на подсчет суммы реакций
               $reaction_sql = "SELECT 
@@ -158,13 +159,14 @@ header('Content-Type: text/html; charset=utf-8');
         </ul>
 
         <footer>
-          <div class="reply-box">
+          <div class="reply-box" >
             <div class="original-message" style="display: none; color: white;">
               <p>Вы отвечаете на сообщение:</p>
               <p id="reply" data-reply-id=""></p>
+              <button id="cancel-reply" class="response">Отменить ответ</button>
             </div>
-            <textarea placeholder="Введите свое сообщение"></textarea>
-            <a href="#" id="send">Отправить</a>
+            <textarea placeholder="Введите свое сообщение" ></textarea>
+            <a href="#" id="send"  style="display: <?php echo ($_SESSION['id'] !== null) ? "contents" : "none" ;?>">Отправить</a>
           </div>
 
         </footer>
@@ -187,7 +189,9 @@ header('Content-Type: text/html; charset=utf-8');
 
       // Получаем текст сообщения из textarea
       var messageText = $("textarea").val();
+      console.error(messageText);
 
+      if ((messageText.trim())){
       var replyId = $("#reply").data("reply-id") == "" ? null : $("#reply").data("reply-id");
       console.error($("#reply").data());
       console.error(replyId);
@@ -216,6 +220,10 @@ header('Content-Type: text/html; charset=utf-8');
           console.error(xhr.responseText);
         }
       });
+    }
+    else{
+      alert("Вы не ввели сообщение!");
+    }
     });
   });
 </script>
@@ -334,6 +342,7 @@ header('Content-Type: text/html; charset=utf-8');
 
       // Показываем блок original-message
       $(".original-message").show();
+      $(".cancel-reply").show();
 
       // Устанавливаем текст сообщения ответа
       $("#reply").text(originalMessage);
@@ -342,6 +351,14 @@ header('Content-Type: text/html; charset=utf-8');
       $("#reply").data("reply-id", messageId);
       // console.error($("#reply").data());
 
+    });
+
+    $("#cancel-reply").click(function () {
+      // Скрываем блок original-message
+      $(".original-message").hide();
+      $(".cancel-reply").hide();
+      // Очищаем идентификатор сообщения ответа
+      $("#reply").data("reply-id", "");
     });
   });
 </script>

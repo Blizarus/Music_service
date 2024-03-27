@@ -1,0 +1,1 @@
+﻿DELETE FROM message WHERE DATE(datemessage) = '2024-03-26';
