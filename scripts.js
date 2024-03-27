@@ -78,3 +78,13 @@ function addStatistic(compositionId) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+function openNewWindow(url) {
+    // Открываем новое окно с указанным URL
+    window.open(url, '_blank', 'width=600,height=400');
+}
+
+function openNewWindow(url, startDate, endDate) {
+    // Открываем новое окно с указанным URL и добавляем даты начала и конца периода к нему
+    window.open(url + '?start_date=' + startDate + '&end_date=' + endDate, '_blank', 'width=600,height=400');
+}
