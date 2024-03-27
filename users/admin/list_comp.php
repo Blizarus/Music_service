@@ -42,8 +42,14 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                 if ($criteria == 1) {
                     echo '<a class="settings__link" href="list_comp.php?criteria=1&sort_column=lisening">Статистика популярности треков</a>
                     <p><a class="settings__link" href="list_genre.php?criteria=1&sort_column=lisening">Статистика популярности жанров</a></p>
-                    <p><a class="settings__link" href="list_artist.php?criteria=1&sort_column=lisening">Статистика популярности исполнителей</a></p>
-                    ';
+                    <p><a class="settings__link" href="list_artist.php?criteria=1&sort_column=lisening">Статистика популярности исполнителей</a></p><br>
+                    <label class="settings__link" for="start_date">Дата начала:</label>
+                    <input  type="date" id="start_date" name="start_date">
+                    <label class="settings__link" for="end_date">Дата конца:</label>
+                    <input type="date" id="end_date" name="end_date">
+                    <button type="button" class="content-search__button" onclick="openNewWindow(\'/users/admin/pdf_report.php\', document.getElementById(\'start_date\').value, document.getElementById(\'end_date\').value)">Выписка о прослушиваниях за период.</button>
+';
+
                 }
                 ?>
                 <div class="content-main">

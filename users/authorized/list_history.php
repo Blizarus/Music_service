@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die ("Connection failed: " . $conn->connect_error);
 }
 $id = $_SESSION['id'];
 ?>
@@ -22,22 +22,22 @@ $id = $_SESSION['id'];
 
 <body>
     <header class="header">
-            <a href="../general_page.php">Музыкальный сервис</a>
+        <a href="../general_page.php">Музыкальный сервис</a>
 
     </header>
     <main class="main">
         <div class="container">
-            <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
             <section class="content">
                 <div class="content-main">
                     <div class="table-container">
-                        <button type="button" class="content-search__button"
-                            onclick="showTable(1)">История поиска</button>
-                        <button type="button" class="content-search__button"
-                            onclick="showTable(2)">История анализа композиций</button>
-                        <button type="button" class="content-search__button"
-                            onclick="showTable(3)">История прослушивания композиций</button>
+                        <button type="button" class="content-search__button" onclick="showTable(1)">История
+                            поиска</button>
+                        <button type="button" class="content-search__button" onclick="showTable(2)">История анализа
+                            композиций</button>
+                        <button type="button" class="content-search__button" onclick="showTable(3)">История
+                            прослушивания композиций</button>
 
                         <div id="table1">
                             <table class="data-table">
@@ -67,6 +67,9 @@ $id = $_SESSION['id'];
                             </table>
                         </div>
                         <div id="table3" style="display: none">
+                            <button type="button" class="content-search__button"
+                                onclick="openNewWindow('/users/authorized/pdf_hiltory.php')">Выписка о
+                                прослушиваниях</button>
                             <table class="data-table">
                                 <thead>
                                     <tr>
@@ -145,5 +148,6 @@ $id = $_SESSION['id'];
     </main>
 </body>
 <script src="/scripts_add.js"></script>
+<script src="/scripts.js"></script>
 
 </html>
