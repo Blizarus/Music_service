@@ -65,7 +65,7 @@ function playAudio(audioSource, compositionId) {
 
 
 function addStatistic(compositionId) {
-    fetch('add_statistic.php', {
+    fetch('/users/authorized/add_statistic.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
