@@ -50,7 +50,7 @@
 
 function showTable(index) {
 
-    for (var i = 1; i <= 3; i++) {
+    for (var i = 1; i <= 4; i++) {
         var table = document.getElementById('table' + i);
         if (table) {
             table.style.display = 'none';

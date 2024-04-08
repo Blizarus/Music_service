@@ -131,10 +131,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $name = $artist[1] . "-" . str_replace(' ', '_', $composition);
   $dateupload = date("Y-m-d");
-  $coverpath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . $artist[1] . "\\" . $composition . ".png";
+  $coverpath = "C:\\Games\\xampp\\htdocs\\music\\media\\composition\\" . $artist[1] . "\\" . $composition . ".png";
 
   $musicFile = $_FILES['music_file'];
-  $filepath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . $artist[1] . "\\";
+  $filepath = "C:\\Games\\xampp\\htdocs\\music\\media\\composition\\" . $artist[1] . "\\";
   $musicFileName = $name . ".mp3";
   $targetFile = $filepath . $musicFileName;
   move_uploaded_file($musicFile['tmp_name'], $targetFile);
@@ -162,8 +162,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
 
-  $// Вставка записи в таблицу audiofiles
-    $stmt = $conn->prepare("INSERT INTO audiofiles (filesize, filepath, dateupload, coverpath) VALUES (?, ?, ?, ?)");
+  // Вставка записи в таблицу audiofiles
+    $stmt = $conn->prepare("INSERT INTO audiofiles (size, filepath, dateupload, coverpath) VALUES (?, ?, ?, ?)");
   if ($stmt) {
     $stmt->bind_param("dsss", $filesize, $targetFile, $dateupload, $coverpath);
     $filesize = round(filesize($targetFile) / 1024);
@@ -175,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Вставка записи в таблицу composition
-  $stmt = $conn->prepare("INSERT INTO composition (artistid, genreid, compositionname, audiofilesid) VALUES (?, ?, ?, ?)");
+  $stmt = $conn->prepare("INSERT INTO composition (artistid, genreid, name, compositionid) VALUES (?, ?, ?, ?)");
   if ($stmt) {
     $stmt->bind_param("iisi", $artist[0], $genre, $composition, $inserted_audiofiles_id);
     $stmt->execute();
@@ -185,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Вставка записи в таблицу сharacteristics_music
-  $stmt = $conn->prepare("INSERT INTO сharacteristics_music (tonalityid, BPM, duration, presencevoice) VALUES (?, ?, ?, ?)");
+  $stmt = $conn->prepare("INSERT INTO сharacteristics_music (tonality, BPM, duration, presencevoice) VALUES (?, ?, ?, ?)");
   if ($stmt) {
     $stmt->bind_param("iiid", $tonality, $BPM, $duration_seconds, $presencevoice);
     $stmt->execute();

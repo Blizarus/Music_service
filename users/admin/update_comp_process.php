@@ -31,12 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $duration_seconds = $composition[9];
 
-  $coverpath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . $artist . "\\" . $name_composition . ".png";
+  $coverpath = "C:\\Games\\xampp\\htdocs\\music\\media\\composition\\" . $artist . "\\" . $name_composition . ".png";
 
   if (!empty ($_FILES['music_file']['tmp_name'])) {
     $dateupload = date("Y-m-d");
 
-    $targetFile = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . $artist . "\\" . $artist . "-" . str_replace(' ', '_', $name_composition) . ".mp3";
+    $targetFile = "C:\\Games\\xampp\\htdocs\\music\\media\\composition\\" . $artist . "\\" . $artist . "-" . str_replace(' ', '_', $name_composition) . ".mp3";
     move_uploaded_file($_FILES['music_file']['tmp_name'], $targetFile);
 
     require_once ($_SERVER['DOCUMENT_ROOT'] . '/libraries/getID3-1.9.23/getid3/getid3.php');

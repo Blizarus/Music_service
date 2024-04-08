@@ -9,7 +9,7 @@ if ($conn->connect_error) {
 if ($_FILES['imageData']['error'] === UPLOAD_ERR_OK) {
     $tempFile = $_FILES['imageData']['tmp_name'];
     $genreId = $_GET['id'];
-    $targetFile = "C:\\Games\\xampp\\htdocs\\musicmedia\\genre\\" . $genreId . ".png";
+    $targetFile = "C:\\Games\\xampp\\htdocs\\music\\media\\genre\\" . $genreId . ".png";
 
     // Перемещаем временный файл в целевой каталог
     if (move_uploaded_file($tempFile, $targetFile)) {

@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $artist = $_POST['name_artist'];
 
-    $coverpath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . str_replace(' ', '_', $artist);
+    $coverpath = "C:\\Games\\xampp\\htdocs\\music\\media\\composition\\" . str_replace(' ', '_', $artist);
 
     // Проверяем существование директории, если не существует, создаем
     if (!file_exists($coverpath)) {

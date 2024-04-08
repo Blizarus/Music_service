@@ -69,20 +69,22 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                             </thead>
                             <tbody id="table-content">
                                 <?php
-                                $sql = "SELECT artistid id, name name, coverpath,
+                                $sql = "SELECT artistid id, name, coverpath,
                                 (select count(liseningdate) from statistic s where s.audiofileid in 
                                 (select compositionid from composition c where c.artistid=a.artistid)) lisening
                                  from artist a ORDER BY " . $sort_column . " " . $current_sort_order;
 
                                 $result = $conn->query($sql);
+                                $prefix = "C:\\Games\\xampp\\htdocs\\music";
                                 if ($result->num_rows > 0) {
                                     while ($row = mysqli_fetch_row($result)) {
                                         $url_update = 'update_artist.php?id=' . $row[0];
                                         $url_delete = 'delete_artist_process.php?id=' . $row[0];
-                                        $image_url = str_replace("C:\\Games\\xampp\\htdocs\\music", "", $row[2]);
-                                        if (@file_get_contents($image_url) == false) {
+                                        $url_statistic = 'chart_gisto.php?id=' . $row[0]. '&name='. rawurlencode($row[1]);
+                                        $image_url = str_replace($prefix, "", $row[2]);
+                                        if (!file_exists($prefix . $image_url)) {
                                             $image_url = "/media/unknown.png";
-                                        }
+                                          }
                                         echo '
                                             <tr>
                                             <td>' . $row[0] . '</td>
@@ -100,7 +102,8 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                         if ($criteria == 1) {
                                             echo '<td>' . $row[3] . '</td>';
                                         }
-                                        echo '<td><button onclick="redirectToPage(\'' . $url_update . '\')" class="content-wrapper__buttons" >Редактировать</button></td>    
+                                        echo '<td><button onclick="redirectToPage(\'' . $url_statistic . '\')" class="content-wrapper__buttons" >Гистограмма прослушиваний</button></td>   
+                                            <td><button onclick="redirectToPage(\'' . $url_update . '\')" class="content-wrapper__buttons" >Редактировать</button></td>    
                                             <td><button onclick="redirectToPage(\'' . $url_delete . '\')" class="content-wrapper__buttons" >Удалить</button></td>    
                                             </tr>';
                                     }

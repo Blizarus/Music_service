@@ -105,7 +105,7 @@ $artist = $result->fetch_row();
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $coverpath = "C:\\Games\\xampp\\htdocs\\musicmedia\\composition\\" . str_replace(' ', '_', $artist) . "\\" . str_replace(' ', '_', $artist) . ".png";
+    $coverpath = "C:\\Games\\xampp\\htdocs\\music\\media\\composition\\" . str_replace(' ', '_', $artist) . "\\" . str_replace(' ', '_', $artist) . ".png";
 
     if (!empty ($_FILES['cover_file']['tmp_name'])) {
 
