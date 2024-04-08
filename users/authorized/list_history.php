@@ -18,6 +18,7 @@ $id = $_SESSION['id'];
     <link rel="stylesheet" href="/table.css">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/style_add.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>
@@ -32,13 +33,10 @@ $id = $_SESSION['id'];
             <section class="content">
                 <div class="content-main">
                     <div class="table-container">
-                        <button type="button" class="content-search__button" onclick="showTable(1)">История
-                            поиска</button>
-                        <button type="button" class="content-search__button" onclick="showTable(2)">История анализа
-                            композиций</button>
-                        <button type="button" class="content-search__button" onclick="showTable(3)">История
-                            прослушивания композиций</button>
-
+                        <button type="button" class="content-search__button" onclick="showTable(1)">История поиска</button>
+                        <button type="button" class="content-search__button" onclick="showTable(2)">История анализа композиций</button>
+                        <button type="button" class="content-search__button" onclick="showTable(3)">История прослушивания композиций</button>
+                        <button type="button" class="content-search__button" onclick="showTable(4)">Круговая диаграмма прослушиваемых жанров</button>
                         <div id="table1">
                             <table class="data-table">
                                 <thead>
@@ -67,9 +65,7 @@ $id = $_SESSION['id'];
                             </table>
                         </div>
                         <div id="table3" style="display: none">
-                            <button type="button" class="content-search__button"
-                                onclick="openNewWindow('/users/authorized/pdf_hiltory.php')">Выписка о
-                                прослушиваниях</button>
+                            <button type="button" class="content-search__button" onclick="openNewWindow('/users/authorized/pdf_hiltory.php')">Выписка о прослушиваниях</button>
                             <table class="data-table">
                                 <thead>
                                     <tr>
@@ -139,7 +135,25 @@ $id = $_SESSION['id'];
                                 </tbody>
                             </table>
                         </div>
-
+                        <div id="table4" style="display: none">
+                            <?php 
+                            $sql = "SELECT g.name AS genre_name, COUNT(s.statisticid) AS listens
+                            FROM statistic s
+                            JOIN composition c ON s.audiofileid = c.compositionid
+                            JOIN genre g ON c.genreid = g.genreid
+                            WHERE s.customerid = $id
+                            GROUP BY g.name";
+                            $result = $conn->query($sql);
+                            
+                            // Создание массива данных для круговой диаграммы
+                            $data = array();
+                            while ($row = $result->fetch_assoc()) {
+                                $data[] = array($row['genre_name'], intval($row['listens']));
+                            }
+                            $conn->close();
+                            ?>
+                            <div id="chart_div" style="width: 900px; height: 500px;"></div>
+                        </div>
                     </div>
                 </div>
                 </form>
@@ -149,5 +163,36 @@ $id = $_SESSION['id'];
 </body>
 <script src="/scripts_add.js"></script>
 <script src="/scripts.js"></script>
+<script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Жанр');
+            data.addColumn('number', 'Прослушивания');
+            data.addRows(<?php echo json_encode($data); ?>);
+
+            var options = {
+                title: 'Процентное соотношение прослушиваний по жанрам',
+                pieHole: 0.4,
+                width: 1000, // Установка ширины графика
+    height: 800, // Установка высоты графика
+                backgroundColor: 'transparent', // Цвет фона
+                legend: {
+                    textStyle: {color: '#FFFFFF'} // Цвет текста легенды
+                },
+                titleTextStyle: {
+                    color: '#FFFFFF' // Цвет заголовка
+                },
+                pieSliceTextStyle: {
+                    color: '#FFFFFF' // Цвет текста секторов
+                }
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
 
 </html>
