@@ -177,7 +177,7 @@ $id = $_SESSION['id'];
                 title: 'Процентное соотношение прослушиваний по жанрам',
                 pieHole: 0.4,
                 width: 1000, // Установка ширины графика
-    height: 800, // Установка высоты графика
+                height: 800, // Установка высоты графика
                 backgroundColor: 'transparent', // Цвет фона
                 legend: {
                     textStyle: {color: '#FFFFFF'} // Цвет текста легенды
