@@ -43,7 +43,7 @@
 
             <li class="settings__list-item">
                 <img src="/media/image/reg.svg" alt="ИконкаРегистрации" style="width: 25px; height: 25px;">
-                <a href="registration.html" class="settings__link">Зарегистрироваться</a>
+                <a href="/users/registration.html" class="settings__link">Зарегистрироваться</a>
             </li>
             ';
             } else {

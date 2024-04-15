@@ -34,7 +34,7 @@ if ($result->num_rows > 0) {
     exit;
 }
 
-$conn->query("INSERT INTO customers VALUES (NULL, '$name', '$lname', '$email', 0)");
+$conn->query("INSERT INTO customers VALUES (NULL, '$name', '$lname', '$email', 0, '')");
 $insert_id = $conn->insert_id;
 
 $conn->query("INSERT INTO login_password VALUES (NULL, '$login', SHA1('$password'))");

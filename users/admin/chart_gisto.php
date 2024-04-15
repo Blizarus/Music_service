@@ -45,8 +45,7 @@ $conn->close();
 
         <section class="content">
         <div class="content-head">
-    <?php 
-    echo '<h3 class="content-wrapper__text">' . $name_artist . '</h3>'; ?>
+    <?php echo '<h3 class="content-wrapper__text">' . $name_artist . '</h3>'; ?>
     </div>
         <div class="content-main">
 

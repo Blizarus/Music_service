@@ -83,7 +83,7 @@ $conn->close();
     },
     width: 1000, // Установка ширины графика
     height: 800, // Установка высоты графика
-    backgroundColor: 'transparent', // Установка цвета фона (темно-серый)
+    backgroundColor: 'transparent', // Установка цвета фона 
     colors: ['#FFA500'], // Установка цвета линии графика (оранжевый)
     legend: {textStyle: {color: '#FFFFFF'}}, // Установка цвета текста легенды
     titleTextStyle: {color: '#FFFFFF'} // Установка цвета заголовка графика
