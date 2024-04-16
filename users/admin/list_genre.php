@@ -44,7 +44,8 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                     echo '<a class="settings__link" href="list_comp.php?criteria=1&sort_column=lisening">Статистика популярности треков</a>
                           <p><a class="settings__link" href="list_genre.php?criteria=1&sort_column=lisening">Статистика популярности жанров</a></p>
                           <p><a class="settings__link" href="list_artist.php?criteria=1&sort_column=lisening">Статистика популярности исполнителей</a></p><br>
-                          <button type="button" class="content-search__button" onclick="openNewWindow(\'/users/admin/pdf_pricelist.php\')">Выписка о прослушиваниями по жанрам.</button>';
+                          <button type="button" class="content-search__button" onclick="openNewWindow(\'/users/admin/pdf_pricelist.php\')">Выписка о прослушиваниями по жанрам.</button>
+                          <button class="content-search__button" onclick="redirectToPage(\'chart_org\')" class="content-wrapper__buttons" >Организационная диаграмма </button>';
                 }
                 
                 ?>

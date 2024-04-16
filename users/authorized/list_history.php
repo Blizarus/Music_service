@@ -66,6 +66,7 @@ $id = $_SESSION['id'];
                         </div>
                         <div id="table3" style="display: none">
                             <button type="button" class="content-search__button" onclick="openNewWindow('/users/authorized/pdf_hiltory.php')">Выписка о прослушиваниях</button>
+                            <button type="button" class="content-search__button" onclick="redirectToPage('chart_timeline')">Хронология</button>
                             <table class="data-table">
                                 <thead>
                                     <tr>

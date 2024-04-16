@@ -48,7 +48,9 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                     <label class="settings__link" for="end_date">Дата конца:</label>
                     <input type="date" id="end_date" name="end_date">
                     <button type="button" class="content-search__button" onclick="openNewWindow(\'/users/admin/pdf_report.php\', document.getElementById(\'start_date\').value, document.getElementById(\'end_date\').value)">Выписка о прослушиваниях за период.</button>
-                    <button class="content-search__button" onclick="redirectToPage(\'chart_graph\')" class="content-wrapper__buttons" >График прослушиваний</button>';
+                    <button class="content-search__button" onclick="redirectToPage(\'chart_graph\')" class="content-wrapper__buttons" >График прослушиваний</button>
+                    <button class="content-search__button" onclick="redirectToPage(\'chart_bubble\')" class="content-wrapper__buttons" >Пузырькова диаграмма</button>
+                    <button class="content-search__button" onclick="redirectToPage(\'chart_calendar\')" class="content-wrapper__buttons" >Календарь</button>';
 
                 }
                 ?>

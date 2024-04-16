@@ -29,6 +29,8 @@ if ($conn->connect_error) {
             <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
             <section class="content">
+            <button class="content-search__button" onclick="redirectToPage('chart_map')" class="content-wrapper__buttons" >Карта</button>
+            <button class="content-search__button" onclick="redirectToPage('chart_sankey')" class="content-wrapper__buttons" >Диаграмма Санки</button>
                 <div class="content-main">
                     <div class="table-container">
                         <table class="data-table">
