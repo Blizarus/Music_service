@@ -9,7 +9,7 @@ if ($conn->connect_error) {
 $sql = "
 SELECT 
     a.name AS artist_name, 
-    DATE_FORMAT(s.liseningdate, '%Y-%m') AS listen_month, 
+    DATE_FORMAT(s.listeningdate, '%Y-%m') AS listen_month, 
     COUNT(s.statisticid) AS listens_count
 FROM 
     statistic s
@@ -32,15 +32,15 @@ while ($row = $result->fetch_assoc()) {
     $month = $row['listen_month'];
     $artist = $row['artist_name'];
     $count = intval($row['listens_count']);
-    
+
     if (!in_array($artist, $artists)) {
         $artists[] = $artist;
     }
-    
+
     if (!isset($data[$month])) {
         $data[$month] = array_fill_keys($artists, 0);
     }
-    
+
     $data[$month][$artist] = $count;
 }
 
@@ -77,54 +77,55 @@ echo '</script>';
 </head>
 
 <body>
-  <header class="header">
+    <header class="header">
         <a href="../general_page.php">Музыкальный сервис</a>
-    </header> 
+    </header>
     <main class="main">
         <div class="container">
-        <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
-        <section class="content">
-        <div class="content-main">
+            <section class="content">
+                <div class="content-main">
 
-      <div id="chart_div" style="width: 900px; height: 500px;"></div>          
-        </div>     
-      </section>
+                    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+                </div>
+            </section>
         </div>
     </main>
 </body>
 
 <script type="text/javascript">
-        google.charts.load('current', {'packages': ['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable(chartData);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(chartData);
 
-            var options = {
-                title: 'Диаграмма областей прослушиваний исполнителей',
-                hAxis: {
-                    title: 'Месяц',
-                    textStyle: {color: '#FFFFFF'},
-                    titleTextStyle: {color: '#FFFFFF'}
-                },
-                vAxis: {
-                    title: 'Прослушивания',
-                    textStyle: {color: '#FFFFFF'},
-                    titleTextStyle: {color: '#FFFFFF'}, 
-                    minValue: 0
-                },
-                chartArea: {width: '50%', height: '70%'},
-                width: 1200, // Установка ширины графика
-                height: 800, // Установка высоты графика
-                backgroundColor: 'transparent', 
-                legend: {textStyle: {color: '#FFFFFF'}}, // Установка цвета текста легенды
-                titleTextStyle: {color: '#FFFFFF'} // Установка цвета заголовка графика
+        var options = {
+            title: 'Диаграмма областей прослушиваний исполнителей',
+            hAxis: {
+                title: 'Месяц',
+                textStyle: { color: '#FFFFFF' },
+                titleTextStyle: { color: '#FFFFFF' }
+            },
+            vAxis: {
+                title: 'Прослушивания',
+                textStyle: { color: '#FFFFFF' },
+                titleTextStyle: { color: '#FFFFFF' },
+                minValue: 0
+            },
+            chartArea: { width: '50%', height: '70%' },
+            width: 1200, // Установка ширины графика
+            height: 800, // Установка высоты графика
+            backgroundColor: 'transparent',
+            legend: { textStyle: { color: '#FFFFFF' } }, // Установка цвета текста легенды
+            titleTextStyle: { color: '#FFFFFF' } // Установка цвета заголовка графика
 
-            };
+        };
 
-            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-        }
-    </script>
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+</script>
+
 </html>

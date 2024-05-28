@@ -11,7 +11,7 @@ $conn = new mysqli('music', 'root', '', 'music');
 
 // Проверка соединения
 if ($conn->connect_error) {
-  die ("Connection failed: " . $conn->connect_error);
+  die("Connection failed: " . $conn->connect_error);
 }
 
 // Функция для создания таблицы с данными
@@ -43,7 +43,7 @@ function createTable($pdf, $title, $data)
 
 // SQL-запросы для получения данных о прослушиваниях за выбранный период с группировкой по месяцам
 $sql_genre = "SELECT 
-                DATE_FORMAT(liseningdate, '%Y-%m') AS Month,
+                DATE_FORMAT(listeningdate, '%Y-%m') AS Month,
                 genre.name AS Name,
                 COUNT(*) AS Listens 
               FROM 
@@ -53,14 +53,14 @@ $sql_genre = "SELECT
               JOIN 
                 genre ON composition.genreid = genre.genreid 
               WHERE 
-                liseningdate BETWEEN '$start_date' AND '$end_date' 
+                listeningdate BETWEEN '$start_date' AND '$end_date' 
               GROUP BY 
                 Month, genre.name 
               ORDER BY 
                 Month, Listens DESC";
 
 $sql_artist = "SELECT 
-                DATE_FORMAT(liseningdate, '%Y-%m') AS Month,
+                DATE_FORMAT(listeningdate, '%Y-%m') AS Month,
                 artist.name AS Name,
                 COUNT(*) AS Listens 
               FROM 
@@ -70,14 +70,14 @@ $sql_artist = "SELECT
               JOIN 
                 artist ON composition.artistid = artist.artistid 
               WHERE 
-                liseningdate BETWEEN '$start_date' AND '$end_date' 
+                listeningdate BETWEEN '$start_date' AND '$end_date' 
               GROUP BY 
                 Month, artist.name 
               ORDER BY 
                 Month, Listens DESC";
 
 $sql_track = "SELECT 
-                DATE_FORMAT(liseningdate, '%Y-%m') AS Month,
+                DATE_FORMAT(listeningdate, '%Y-%m') AS Month,
                 composition.name AS Name,
                 COUNT(*) AS Listens 
               FROM 
@@ -85,7 +85,7 @@ $sql_track = "SELECT
               JOIN 
                 composition ON statistic.audiofileid = composition.compositionid 
               WHERE 
-                liseningdate BETWEEN '$start_date' AND '$end_date' 
+                listeningdate BETWEEN '$start_date' AND '$end_date' 
               GROUP BY 
                 Month, composition.name 
               ORDER BY 
@@ -147,7 +147,7 @@ $sql_most_popular_genre = "SELECT
                             JOIN 
                                 genre ON composition.genreid = genre.genreid 
                             WHERE 
-                                liseningdate BETWEEN '$start_date' AND '$end_date' 
+                                listeningdate BETWEEN '$start_date' AND '$end_date' 
                             GROUP BY 
                                 genre.name 
                             ORDER BY 
@@ -168,7 +168,7 @@ $sql_most_popular_artist = "SELECT
                             JOIN 
                                 artist ON composition.artistid = artist.artistid 
                             WHERE 
-                                liseningdate BETWEEN '$start_date' AND '$end_date' 
+                                listeningdate BETWEEN '$start_date' AND '$end_date' 
                             GROUP BY 
                                 artist.name 
                             ORDER BY 
@@ -187,7 +187,7 @@ $sql_most_popular_track = "SELECT
                             JOIN 
                                 composition ON statistic.audiofileid = composition.compositionid 
                             WHERE 
-                                liseningdate BETWEEN '$start_date' AND '$end_date' 
+                                listeningdate BETWEEN '$start_date' AND '$end_date' 
                             GROUP BY 
                                 composition.name 
                             ORDER BY 

@@ -27,7 +27,7 @@ header('Content-Type: text/html; charset=utf-8');
 
             $conn = new mysqli('music', 'root', '', 'music');
             if ($conn->connect_error) {
-              die ("Connection failed: " . $conn->connect_error);
+              die("Connection failed: " . $conn->connect_error);
             }
 
             echo
@@ -47,7 +47,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 
             $sql = "select artistid, name,
-              (select count(liseningdate) from statistic s where s.audiofileid in 
+              (select count(listeningdate) from statistic s where s.audiofileid in 
               (select compositionid from composition c where c.artistid=a.artistid)),
               coverpath from artist a
               where LOWER(name) like LOWER('%" . $artist . "%')";

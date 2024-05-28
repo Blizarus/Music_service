@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die ("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 $id = $_SESSION['id'];
 ?>
@@ -33,10 +33,14 @@ $id = $_SESSION['id'];
             <section class="content">
                 <div class="content-main">
                     <div class="table-container">
-                        <button type="button" class="content-search__button" onclick="showTable(1)">История поиска</button>
-                        <button type="button" class="content-search__button" onclick="showTable(2)">История анализа композиций</button>
-                        <button type="button" class="content-search__button" onclick="showTable(3)">История прослушивания композиций</button>
-                        <button type="button" class="content-search__button" onclick="showTable(4)">Круговая диаграмма прослушиваемых жанров</button>
+                        <button type="button" class="content-search__button" onclick="showTable(1)">История
+                            поиска</button>
+                        <button type="button" class="content-search__button" onclick="showTable(2)">История анализа
+                            композиций</button>
+                        <button type="button" class="content-search__button" onclick="showTable(3)">История
+                            прослушивания композиций</button>
+                        <button type="button" class="content-search__button" onclick="showTable(4)">Круговая диаграмма
+                            прослушиваемых жанров</button>
                         <div id="table1">
                             <table class="data-table">
                                 <thead>
@@ -65,8 +69,11 @@ $id = $_SESSION['id'];
                             </table>
                         </div>
                         <div id="table3" style="display: none">
-                            <button type="button" class="content-search__button" onclick="openNewWindow('/users/authorized/pdf_hiltory.php')">Выписка о прослушиваниях</button>
-                            <button type="button" class="content-search__button" onclick="redirectToPage('chart_timeline')">Хронология</button>
+                            <button type="button" class="content-search__button"
+                                onclick="openNewWindow('/users/authorized/pdf_hiltory.php')">Выписка о
+                                прослушиваниях</button>
+                            <button type="button" class="content-search__button"
+                                onclick="redirectToPage('chart_timeline')">Хронология</button>
                             <table class="data-table">
                                 <thead>
                                     <tr>
@@ -77,7 +84,7 @@ $id = $_SESSION['id'];
                                 </thead>
                                 <tbody id="table-content">
                                     <?php
-                                    $sql = "select liseningdate, 
+                                    $sql = "select listeningdate, 
                                     (select name from artist where artist.artistid = (select artistid from composition where composition.compositionid = statistic.audiofileid)) Artist,
                                     (select name from composition where composition.compositionid = statistic.audiofileid) Name
                                     from statistic where customerid  = " . $id;
@@ -137,7 +144,7 @@ $id = $_SESSION['id'];
                             </table>
                         </div>
                         <div id="table4" style="display: none">
-                            <?php 
+                            <?php
                             $sql = "SELECT g.name AS genre_name, COUNT(s.statisticid) AS listens
                             FROM statistic s
                             JOIN composition c ON s.audiofileid = c.compositionid
@@ -145,7 +152,7 @@ $id = $_SESSION['id'];
                             WHERE s.customerid = $id
                             GROUP BY g.name";
                             $result = $conn->query($sql);
-                            
+
                             // Создание массива данных для круговой диаграммы
                             $data = array();
                             while ($row = $result->fetch_assoc()) {
@@ -165,35 +172,35 @@ $id = $_SESSION['id'];
 <script src="/scripts_add.js"></script>
 <script src="/scripts.js"></script>
 <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Жанр');
-            data.addColumn('number', 'Прослушивания');
-            data.addRows(<?php echo json_encode($data); ?>);
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Жанр');
+        data.addColumn('number', 'Прослушивания');
+        data.addRows(<?php echo json_encode($data); ?>);
 
-            var options = {
-                title: 'Процентное соотношение прослушиваний по жанрам',
-                pieHole: 0.4,
-                width: 1000, // Установка ширины графика
-                height: 800, // Установка высоты графика
-                backgroundColor: 'transparent', // Цвет фона
-                legend: {
-                    textStyle: {color: '#FFFFFF'} // Цвет текста легенды
-                },
-                titleTextStyle: {
-                    color: '#FFFFFF' // Цвет заголовка
-                },
-                pieSliceTextStyle: {
-                    color: '#FFFFFF' // Цвет текста секторов
-                }
-            };
+        var options = {
+            title: 'Процентное соотношение прослушиваний по жанрам',
+            pieHole: 0.4,
+            width: 1000, // Установка ширины графика
+            height: 800, // Установка высоты графика
+            backgroundColor: 'transparent', // Цвет фона
+            legend: {
+                textStyle: { color: '#FFFFFF' } // Цвет текста легенды
+            },
+            titleTextStyle: {
+                color: '#FFFFFF' // Цвет заголовка
+            },
+            pieSliceTextStyle: {
+                color: '#FFFFFF' // Цвет текста секторов
+            }
+        };
 
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-        }
-    </script>
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+</script>
 
 </html>

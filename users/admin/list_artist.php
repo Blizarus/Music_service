@@ -5,12 +5,12 @@ ini_set('display_errors', 'off');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die ("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 $criteria = $_GET['criteria'];
 
-$sort_column = isset ($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
-$current_sort_order = isset ($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
+$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
+$current_sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
 
 $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
 ?>
@@ -70,7 +70,7 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                             <tbody id="table-content">
                                 <?php
                                 $sql = "SELECT artistid id, name, coverpath,
-                                (select count(liseningdate) from statistic s where s.audiofileid in 
+                                (select count(listeningdate) from statistic s where s.audiofileid in 
                                 (select compositionid from composition c where c.artistid=a.artistid)) lisening
                                  from artist a ORDER BY " . $sort_column . " " . $current_sort_order;
 
@@ -80,11 +80,11 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                     while ($row = mysqli_fetch_row($result)) {
                                         $url_update = 'update_artist.php?id=' . $row[0];
                                         $url_delete = 'delete_artist_process.php?id=' . $row[0];
-                                        $url_statistic = 'chart_gisto.php?id=' . $row[0]. '&name='. rawurlencode($row[1]);
+                                        $url_statistic = 'chart_gisto.php?id=' . $row[0] . '&name=' . rawurlencode($row[1]);
                                         $image_url = str_replace($prefix, "", $row[2]);
                                         if (!file_exists($prefix . $image_url)) {
                                             $image_url = "/media/unknown.png";
-                                          }
+                                        }
                                         echo '
                                             <tr>
                                             <td>' . $row[0] . '</td>

@@ -7,12 +7,12 @@ $conn = new mysqli('music', 'root', '', 'music');
 
 // Проверка соединения
 if ($conn->connect_error) {
-  die ("Connection failed: " . $conn->connect_error);
+  die("Connection failed: " . $conn->connect_error);
 }
 
 // Запрос к базе данных для получения данных
 $id = $_SESSION['id']; // Пример: id пользователя
-$sql = "SELECT liseningdate, 
+$sql = "SELECT listeningdate, 
                (SELECT name FROM artist WHERE artist.artistid = (SELECT artistid FROM composition WHERE composition.compositionid = statistic.audiofileid)) AS Artist,
                (SELECT name FROM composition WHERE composition.compositionid = statistic.audiofileid) AS Name
         FROM statistic WHERE customerid = " . $id;
@@ -35,7 +35,7 @@ $pdf->Ln();
 // Добавление данных из базы данных в таблицу PDF
 if ($result->num_rows > 0) {
   while ($row = $result->fetch_assoc()) {
-    $pdf->Cell(50, 10, $row["liseningdate"], 1);
+    $pdf->Cell(50, 10, $row["listeningdate"], 1);
     $pdf->Cell(60, 10, $row["Artist"], 1);
     $pdf->Cell(60, 10, $row["Name"], 1);
     $pdf->Ln();

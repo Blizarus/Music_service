@@ -5,11 +5,11 @@ ini_set('display_errors', 'off');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die ("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 $criteria = $_GET['criteria'];
-$sort_column = isset ($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
-$current_sort_order = isset ($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
+$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
+$current_sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
 
 $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
 ?>
@@ -47,7 +47,7 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                           <button type="button" class="content-search__button" onclick="openNewWindow(\'/users/admin/pdf_pricelist.php\')">Выписка о прослушиваниями по жанрам.</button>
                           <button class="content-search__button" onclick="redirectToPage(\'chart_org\')" class="content-wrapper__buttons" >Организационная диаграмма </button>';
                 }
-                
+
                 ?>
                 <div class="content-main">
                     <div class="table-container">
@@ -69,7 +69,7 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                 <?php
                                 $sql = "SELECT genreid id, name genre, 
                                 coverpath,
-                                (select count(liseningdate) from statistic s where s.audiofileid in 
+                                (select count(listeningdate) from statistic s where s.audiofileid in 
                                 (select compositionid from composition c where c.genreid=g.genreid)) lisening
                                 from genre g ORDER BY " . $sort_column . " " . $current_sort_order;
 

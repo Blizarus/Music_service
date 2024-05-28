@@ -5,11 +5,11 @@ ini_set('display_errors', 'off');
 
 $conn = new mysqli('music', 'root', '', 'music');
 if ($conn->connect_error) {
-    die ("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 $criteria = $_GET['criteria'];
-$sort_column = isset ($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
-$current_sort_order = isset ($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
+$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'id';
+$current_sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'desc';
 
 $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
 ?>
@@ -80,7 +80,7 @@ $next_sort_order = $current_sort_order === 'asc' ? 'desc' : 'asc';
                                     (select name from genre g where g.genreid = c.genreid) genre,
                                     (select name from artist a where a.artistid = c.artistid) artist,
                                     (select dateupload from audiofiles a where a.audiofileid = c.compositionid) date,
-                                    (select count(liseningdate) from statistic s where s.audiofileid = c.compositionid) lisening,
+                                    (select count(listeningdate) from statistic s where s.audiofileid = c.compositionid) lisening,
                                     (select coverpath  from audiofiles a where a.audiofileid = c.compositionid)
                                     FROM composition c ORDER BY " . $sort_column . " " . $current_sort_order;
                                 $result = $conn->query($sql);

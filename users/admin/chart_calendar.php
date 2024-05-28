@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 
 $sql = "
 SELECT 
-    DATE(s.liseningdate) AS listen_date, 
+    DATE(s.listeningdate) AS listen_date, 
     COUNT(s.statisticid) AS listens_count
 FROM 
     statistic s
@@ -43,26 +43,26 @@ $json_data = json_encode($data);
 </head>
 
 <body>
-  <header class="header">
+    <header class="header">
         <a href="../general_page.php">Музыкальный сервис</a>
-    </header> 
+    </header>
     <main class="main">
         <div class="container">
-        <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
-        <section class="content">
-        <div class="content-main">
+            <section class="content">
+                <div class="content-main">
 
-      <div id="chart_div" style="width: 900px; height: 500px;"></div>          
-        </div>     
-      </section>
+                    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+                </div>
+            </section>
         </div>
     </main>
 </body>
 
 <script type="text/javascript">
     // Загружаем библиотеку календаря
-    google.charts.load('current', {'packages':['calendar']});
+    google.charts.load('current', { 'packages': ['calendar'] });
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -70,7 +70,7 @@ $json_data = json_encode($data);
         var data = new google.visualization.DataTable();
         data.addColumn('date', 'Дата');
         data.addColumn('number', 'Прослушивания песен');
-        
+
         // Добавляем данные в таблицу из PHP массива
         var jsonData = <?php echo $json_data; ?>;
         jsonData.forEach(row => {
@@ -78,7 +78,7 @@ $json_data = json_encode($data);
             var listensCount = row['listens_count'];
             data.addRow([date, listensCount]);
         });
-        
+
         // Настройка опций для календаря
         var options = {
             title: 'Календарь прослушиваний песен',
@@ -91,7 +91,7 @@ $json_data = json_encode($data);
             height: 800,
             underYearSpace: 10
         };
-        
+
         // Создаем календарь и отображаем его на странице
         var calendar = new google.visualization.Calendar(document.getElementById('chart_div'));
         calendar.draw(data, options);

@@ -10,8 +10,8 @@ $id = $_SESSION['id'];
 $sql = "
 SELECT 
     c.name AS song_title,
-    MIN(s.liseningdate) AS first_listen_date,
-    MAX(s.liseningdate) AS last_listen_date
+    MIN(s.listeningdate) AS first_listen_date,
+    MAX(s.listeningdate) AS last_listen_date
 FROM 
     statistic s
 JOIN 
@@ -19,7 +19,7 @@ JOIN
 JOIN 
     composition c ON af.audiofileid = c.compositionid
 WHERE 
-    customerid = ".$id."
+    customerid = " . $id . "
 GROUP BY 
     song_title
 ORDER BY 
@@ -51,52 +51,53 @@ $conn->close();
 </head>
 
 <body>
-  <header class="header">
+    <header class="header">
         <a href="../general_page.php">Музыкальный сервис</a>
-    </header> 
+    </header>
     <main class="main">
         <div class="container">
-        <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
+            <?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/settings.php'); ?>
 
-        <section class="content">
-        <div class="content-main">
-    <div class="content-head">
-    <?php echo '<h3 class="content-wrapper__text">Хронология</h3>'; ?>
-    </div>
-      <div id="chart_div" style="width: 900px; height: 500px;"></div>          
-        </div>     
-      </section>
+            <section class="content">
+                <div class="content-main">
+                    <div class="content-head">
+                        <?php echo '<h3 class="content-wrapper__text">Хронология</h3>'; ?>
+                    </div>
+                    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+                </div>
+            </section>
         </div>
     </main>
 </body>
 
 <script type="text/javascript">
-   // Загрузите библиотеку Google Charts
-google.charts.load('current', {packages: ['timeline']});
-google.charts.setOnLoadCallback(drawChart);
+    // Загрузите библиотеку Google Charts
+    google.charts.load('current', { packages: ['timeline'] });
+    google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
-    // Создайте массив данных
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Название песни');
-    data.addColumn('date', 'Первое прослушивание песни');
-    data.addColumn('date', 'Последнее прослушивание песни');
+    function drawChart() {
+        // Создайте массив данных
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Название песни');
+        data.addColumn('date', 'Первое прослушивание песни');
+        data.addColumn('date', 'Последнее прослушивание песни');
 
-    // Добавьте данные
-    <?php
-    foreach ($data as $row) {
-        $firstListenDate = strtotime($row['first_listen_date']);
-        $lastListenDate = strtotime($row['last_listen_date']);
-        echo "data.addRow(['" . $row['song_title'] . "', new Date($firstListenDate * 1000), new Date($lastListenDate * 1000)]);\n";
-    }
-    ?>
-
-    var options = {
-        timeline: { groupByRowLabel: true },
-        height: 500,
+        // Добавьте данные
+        <?php
+        foreach ($data as $row) {
+            $firstListenDate = strtotime($row['first_listen_date']);
+            $lastListenDate = strtotime($row['last_listen_date']);
+            echo "data.addRow(['" . $row['song_title'] . "', new Date($firstListenDate * 1000), new Date($lastListenDate * 1000)]);\n";
+        }
+        ?>
+    
+        var options = {
+            timeline: { groupByRowLabel: true },
+            height: 500,
     };
 
-    // Создайте пузырьковую диаграмму и передайте опции
+    // Со
+здайте пузырьковую диаграмму и передайте опции
     var chart = new google.visualization.Timeline(document.getElementById('chart_div'));
     chart.draw(data, options);
 }
