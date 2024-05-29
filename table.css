@@ -2,6 +2,8 @@
     border-spacing: 0 10px;
     font-family: 'Open Sans', sans-serif;
     font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;  
 }
 
 th {
